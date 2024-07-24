@@ -1,0 +1,113 @@
+{
+  "$id": "schemas",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "outgoingMessageReceived": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "typeWebhook": {
+          "type": "string"
+        },
+        "instanceData": {
+          "$ref": "#/properties/commonSchemaComponents/properties/instanceData"
+        },
+        "timestamp": {
+          "type": "integer"
+        },
+        "idMessage": {
+          "type": "string"
+        },
+        "senderData": {
+          "$ref": "#/properties/commonSchemaComponents/properties/senderData"
+        },
+        "messageData": {
+          "$ref": "#/properties/commonSchemaComponents/properties/messageData"
+        }
+      },
+      "required": [
+        "typeWebhook",
+        "instanceData",
+        "timestamp",
+        "idMessage",
+        "senderData",
+        "messageData"
+      ],
+      "additionalProperties": true
+    },
+
+    "outgoingAPIMessageReceived": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "typeWebhook": {
+          "type": "string",
+          "enum": ["outgoingAPIMessageReceived"]
+        },
+        "instanceData": {
+          "$ref": "#/properties/commonSchemaComponents/properties/instanceData"
+        },
+        "timestamp": {
+          "type": "integer"
+        },
+        "idMessage": {
+          "type": "string"
+        },
+        "senderData": {
+          "$ref": "#/properties/commonSchemaComponents/properties/senderData"
+        },
+        "messageData": {
+          "$ref": "#/properties/commonSchemaComponents/properties/messageData"
+        }
+      },
+      "required": [
+        "typeWebhook",
+        "instanceData",
+        "timestamp",
+        "idMessage",
+        "senderData",
+        "messageData"
+      ],
+      "additionalProperties": true
+    },
+
+    "outgoingMessageStatus": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "typeWebhook": {
+          "type": "string"
+        },
+        "chatId": {
+          "type": "string"
+        },
+        "instanceData": {
+          "$ref": "#/properties/commonSchemaComponents/properties/instanceData"
+        },
+        "timestamp": {
+          "type": "integer"
+        },
+        "idMessage": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "sendByApi": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "typeWebhook",
+        "chatId",
+        "instanceData",
+        "timestamp",
+        "idMessage",
+        "status",
+        "sendByApi"
+      ],
+      "additionalProperties": true
+    }
+  }
+}

@@ -1,0 +1,186 @@
+{
+  "$id": "schemas",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+
+    "stateInstanceChanged": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "typeWebhook": {
+          "type": "string"
+        },
+        "instanceData": {
+          "$ref": "#/properties/commonSchemaComponents/properties/instanceData"
+        },
+        "timestamp": {
+          "type": "integer"
+        },
+        "stateInstance": {
+          "type": "string"
+        }
+      },
+      "required": ["typeWebhook", "instanceData", "timestamp", "stateInstance"],
+      "additionalProperties": false
+    },
+
+    "deviceInfo": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "typeWebhook": {
+          "type": "string"
+        },
+        "instanceData": {
+          "$ref": "#/properties/commonSchemaComponents/properties/instanceData"
+        },
+        "timestamp": {
+          "type": "integer"
+        },
+        "avatarInfo": {
+          "type": "object",
+          "properties": {
+            "chatId": {
+              "type": "string"
+            },
+            "urlAvatar": {
+              "type": "string"
+            }
+          },
+          "required": ["chatId", "urlAvatar"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["typeWebhook", "instanceData", "timestamp", "avatarInfo"],
+      "additionalProperties": false
+    },
+
+    "incomingCall": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "typeWebhook": {
+          "type": "string"
+        },
+        "instanceData": {
+          "$ref": "#/properties/commonSchemaComponents/properties/instanceData"
+        },
+        "status": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "integer"
+        },
+        "idMessage": {
+          "type": "string"
+        },
+        "from": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "typeWebhook",
+        "instanceData",
+        "status",
+        "timestamp",
+        "idMessage",
+        "from"
+      ],
+      "additionalProperties": false
+    },
+
+    "statusInstanceChanged": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "typeWebhook": {
+          "type": "string"
+        },
+        "instanceData": {
+          "$ref": "#/properties/commonSchemaComponents/properties/instanceData"
+        },
+        "timestamp": {
+          "type": "integer"
+        },
+        "statusInstance": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "typeWebhook",
+        "instanceData",
+        "timestamp",
+        "statusInstance"
+      ],
+      "additionalProperties": false
+    },
+
+    "incomingBlock": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "typeWebhook": {
+          "type": "string"
+        },
+        "instanceData": {
+          "$ref": "#/properties/commonSchemaComponents/properties/instanceData"
+        },
+        "timestamp": {
+          "type": "integer"
+        },
+        "chatId": {
+          "type": "string"
+        },
+        "chatState": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "typeWebhook",
+        "instanceData",
+        "timestamp",
+        "chatId",
+        "chatState"
+      ],
+      "additionalProperties": false
+    },
+
+    "quotaExceeded": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "typeWebhook": {
+          "type": "string"
+        },
+        "instanceData": {
+          "$ref": "#/properties/commonSchemaComponents/properties/instanceData"
+        },
+        "quotaData": {
+          "type": "object",
+          "properties": {
+            "method": {
+              "type": "string"
+            },
+            "used": {
+              "type": "integer"
+            },
+            "total": {
+              "type": "integer"
+            },
+            "status": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "required": ["method", "used", "total", "status", "description"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["typeWebhook", "instanceData", "quotaData"],
+      "additionalProperties": false
+    }
+  }
+}

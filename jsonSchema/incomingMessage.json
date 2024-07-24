@@ -1,0 +1,44 @@
+{
+  "$id": "schemas",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "incomingMessageReceived": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "additions": {
+          "type": "object",
+          "default": {}
+        },
+        "typeWebhook": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "integer"
+        },
+        "idMessage": {
+          "type": "string"
+        },
+        "messageData": {
+          "$ref": "#/properties/commonSchemaComponents/properties/messageData"
+        },
+        "instanceData": {
+          "$ref": "#/properties/commonSchemaComponents/properties/instanceData"
+        },
+        "senderData": {
+          "$ref": "#/properties/commonSchemaComponents/properties/senderData"
+        }
+      },
+      "required": [
+        "typeWebhook",
+        "timestamp",
+        "idMessage",
+        "messageData",
+        "instanceData",
+        "senderData"
+      ],
+      "additionalProperties": true
+    }
+  }
+}

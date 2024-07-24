@@ -28,10 +28,6 @@ include_directories(include)
 
 add_executable(whatsapp-api-webhook-server-cpp ${SOURCES})
 
-set_target_properties(whatsapp-api-webhook-server-cpp PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build
-)
-
 set(nlohmann_json_DIR "${CMAKE_SOURCE_DIR}/lib/nlohmann_json/")
 find_package(nlohmann_json CONFIG REQUIRED)
 

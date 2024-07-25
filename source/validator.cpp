@@ -46,21 +46,12 @@ void Validator::Validate(Response &r, nlohmann::json &schemas) {
         return;
     }
 
-    const auto typeWebhookAvailable = (schemas.contains("properties") && schemas["properties"].contains(TypeWebhook)) ? schemas["properties"][TypeWebhook] : nullptr;
-    if (typeWebhookAvailable == nullptr) {
-        // unknown typeWebhook
-        r.error = false;
+    r.error = Validator::ProccessValidate(r, nlohmann::to_string(TypeWebhook), schemas);
+    if (r.error) {
+        std::ostringstream buffer;
+        buffer << TypeWebhook;
+        Logger::Log("Failed check: " + buffer.str(), "error");
     }
-    else if (typeWebhookAvailable.type() == nlohmann::json::value_t::string){
-        r.error = Validator::ProccessValidate(r, "incomingMessageReceived", schemas);
-        if (r.error) {
-            std::ostringstream buffer;
-            buffer << TypeWebhook;
-            Logger::Log("Failed check: " + buffer.str(), "error");
-        }
-    } else {
-        InteruptValidate(r, "TypeWebhook from schemas json is not a string, aborting validation");
-    }    
 }
 
 //  Compare given json object with given schema, returns error, returns [true] if error, [false] if no error

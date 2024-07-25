@@ -2,6 +2,6 @@
     "Address": ":5000",
     "Pattern": "/",
     "WebhookToken": "",
-    "LoggingType": "logger",
+    "LoggingType": "console",
     "_LoggingAvailableType": "logger | console"
 }

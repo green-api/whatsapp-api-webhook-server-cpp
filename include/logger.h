@@ -4,12 +4,13 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <mutex>
 #include <chrono>
 #include <iostream>
+#include <regex>
 
 namespace greenapi {
     extern std::string logCfgType;
+    extern std::string logCfgFilename;
     
     class Logger {
         public:

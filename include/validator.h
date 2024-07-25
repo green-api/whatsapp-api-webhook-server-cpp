@@ -8,12 +8,12 @@
 #include "response.h"
 #include "logger.h"
 #include <sstream>
-
+#include <regex>
 
 namespace greenapi {
     class Validator {
         public:
-            // Main handler, which called outside to start validate proccess. Based on TypeWebhook, it choose handler to validate
+            // Main handler, which called outside to start validate proccess
             static void Validate(Response &r, nlohmann::json &schemas);
         
         protected:
@@ -24,7 +24,9 @@ namespace greenapi {
             static const auto Get(const Response &key, const std::string &value);
             static const auto Get(const nlohmann::json &key, const std::string &value);
 
+            // This function called by Validate, returtns [false] if Response.bodyJson valid, [true] if Response.bodyJson has errors.
             static bool ProccessValidate(Response &r, const std::string &schemaName, const nlohmann::json &schemas);
+            
             Validator() {}
     };
 }

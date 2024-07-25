@@ -46,7 +46,8 @@ void Validator::Validate(Response &r, nlohmann::json &schemas) {
         return;
     }
 
-    r.error = Validator::ProccessValidate(r, nlohmann::to_string(TypeWebhook), schemas);
+    const std::string cleantedTypeWebhook = std::regex_replace(nlohmann::to_string(TypeWebhook), std::regex("\\\""), "");
+    r.error = Validator::ProccessValidate(r, cleantedTypeWebhook, schemas);
     if (r.error) {
         std::ostringstream buffer;
         buffer << TypeWebhook;

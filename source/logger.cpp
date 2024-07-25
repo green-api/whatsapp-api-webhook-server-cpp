@@ -2,20 +2,16 @@
 
 namespace greenapi {
     std::string logCfgType {"console"};
+    std::string logCfgFilename{"log.txt"};
 };
 
 void greenapi::Logger::Log(const std::string &message, const std::string &level) {
-    std::string message_cleared;
-    message_cleared.reserve(message.size());
-    for (std::string::const_iterator it = message.begin(); it != message.end(); ++it) {
-        if ((*it) != '\r' && (*it) != '\n') {
-            message_cleared += (*it);
-        }
-    }
+    std::string message_cleared = std::regex_replace(message, std::regex("[' ']{2,}"), "");
+    message_cleared = std::regex_replace(message_cleared, std::regex("\r\n|\r|\n"), "");
     
     std::ofstream logfile;
     if (greenapi::logCfgType == "logger") {
-        logfile.open("log.txt", std::ios::app);
+        logfile.open(greenapi::logCfgFilename, std::ios::app);
         if (!logfile.is_open()) {
             std::cout << "Unable to open log.txt file. Falling back to console output.\n";
             logCfgType = "console";

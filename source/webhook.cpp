@@ -7,9 +7,6 @@ Webhook::Webhook(const std::string &Address, const std::string &Pattern, const s
     std::regex reg("[^0-9]");
     std::string port = std::regex_replace(Address, reg, "");
     nlohmann::json JsonConfigData = Config::OpenSchemas();
-
-    
-
     serv = std::make_unique<Server>(std::stoi(port), Pattern, WebhookToken, JsonConfigData);
 }
 
@@ -57,6 +54,7 @@ void RequestHandler::handleRequest(Poco::Net::HTTPServerRequest &req, Poco::Net:
         out.flush();
         return;
     }
+    
     // If authorization complete
     if (WebhookToken == "" || GivenToken == WebhookToken) {
         // Reading body
@@ -92,15 +90,11 @@ void RequestHandler::handleRequest(Poco::Net::HTTPServerRequest &req, Poco::Net:
 
         // TypeWebhook is available, ready to validate
         r.typeWebhook = r.bodyJson["typeWebhook"];
-
         Validator::Validate(r, JsonConfigData);
-        if (r.error == false) {
+        if (!r.error) {
             // Setting bodyStr to raw request body, if no error
             r.bodyStr = jsonStr;
         }
-
-        // This will forward request to user-defined functions
-        handleTypeWebhook(r.typeWebhook, r, resp);       
 
         // Setting the status based on validation
         if (!r.error) {
@@ -108,10 +102,12 @@ void RequestHandler::handleRequest(Poco::Net::HTTPServerRequest &req, Poco::Net:
         } else {
             resp.setStatus(Poco::Net::HTTPResponse::HTTP_BAD_REQUEST);
         }
-
         std::ostream& out = resp.send();
         out << "";
         out.flush();
+
+        // This will forward request to user-defined functions
+        handleTypeWebhook(r.typeWebhook, r, resp);
     } else {
         // Token in Authorization header is wrong
         resp.setStatus(Poco::Net::HTTPResponse::HTTP_UNAUTHORIZED);
@@ -123,15 +119,60 @@ void RequestHandler::handleRequest(Poco::Net::HTTPServerRequest &req, Poco::Net:
 
 // This is a bridge between greenapi library and user-defined functions
 void RequestHandler::handleTypeWebhook(const std::string &typeWebhook, Response& body, Poco::Net::HTTPServerResponse &resp) {
-    if (typeWebhook == "incomingMessageReceived")       { UserAdapter::onIncomingMessageReceived(body); return; }
-    if (typeWebhook == "deviceInfo")                    { UserAdapter::onDeviceInfo(body); return; }
-    if (typeWebhook == "incomingCall")                  { UserAdapter::onIncomingCall(body); return; }
-    if (typeWebhook == "outgoingAPIMessageReceived")    { UserAdapter::onOutgoingAPIMessageReceived(body); return; }
-    if (typeWebhook == "outgoingMessageReceived")       { UserAdapter::onOutgoingMessageReceived(body); return; }
-    if (typeWebhook == "outgoingMessageStatus")         { UserAdapter::onOutgoingMessageStatus(body); return; }
-    if (typeWebhook == "stateInstanceChanged")          { UserAdapter::onStateInstanceChanged(body); return; }
-    if (typeWebhook == "statusInstanceChanged")         { UserAdapter::onStatusInstanceChanged(body); return; }
-    else if (typeWebhook != "")                         { UserAdapter::onUnknownTypeWebhook(body); return; }
+    if (typeWebhook == "incomingMessageReceived") {
+        #ifdef ON_INCOMING_MESSAGE_RECEIVED_EXISTS
+            UserAdapter::onIncomingMessageReceived(body);
+        #endif
+        return;
+    }
+    if (typeWebhook == "deviceInfo") {
+        #ifdef ON_DEVICE_INFO_EXISTS
+            UserAdapter::onDeviceInfo(body);
+        #endif
+        return;
+    }
+    if (typeWebhook == "incomingCall") {
+        #ifdef ON_INCOMING_CALL_EXISTS
+            UserAdapter::onIncomingCall(body);
+        #endif
+        return;
+    }
+    if (typeWebhook == "outgoingAPIMessageReceived") {
+        #ifdef ON_OUTGOING_API_MESSAGE_RECEIVED_EXISTS
+            UserAdapter::onOutgoingAPIMessageReceived(body);
+        #endif
+        return;
+    }
+    if (typeWebhook == "outgoingMessageReceived") {
+        #ifdef ON_OUTGOING_MESSAGE_RECEIVED_EXISTS
+            UserAdapter::onOutgoingMessageReceived(body);
+        #endif
+        return;
+    }
+    if (typeWebhook == "outgoingMessageStatus") {
+        #ifdef ON_OUTGOING_MESSAGE_STATUS_EXISTS
+            UserAdapter::onOutgoingMessageStatus(body);
+        #endif
+        return;
+    }
+    if (typeWebhook == "stateInstanceChanged") {
+        #ifdef ON_STATE_INSTANCE_CHANGED_EXISTS
+            UserAdapter::onStateInstanceChanged(body);
+        #endif
+        return;
+    }
+    if (typeWebhook == "statusInstanceChanged") {
+        #ifdef ON_STATUS_INSTANCE_CHANGED_EXISTS
+            UserAdapter::onStatusInstanceChanged(body);
+        #endif
+        return;
+    }
+    else if (typeWebhook != "") {
+        #ifdef ON_UNKNOWN_TYPEWEBHOOK_EXISTS
+            UserAdapter::onUnknownTypeWebhook(body);
+        #endif
+        return;
+    }
 }
 
 // HandlerFactory needs Pattern and WebhookToken for passing it to request handler

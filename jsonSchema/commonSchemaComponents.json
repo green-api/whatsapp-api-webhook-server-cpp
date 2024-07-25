@@ -1,13 +1,13 @@
 {
   "$id": "schemas",
-  "$schema": "https://json-schema.org/draft-07/schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "properties": {
     "commonSchemaComponents": {
       "type": "object",
       "properties": {
         "instanceData": {
-          "$schema": "https://json-schema.org/draft-07/schema",
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
           "type": "object",
           "properties": {
             "idInstance": {
@@ -25,7 +25,7 @@
         },
 
         "senderData": {
-          "$schema": "https://json-schema.org/draft-07/schema",
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
           "type": "object",
           "properties": {
             "chatId": {
@@ -49,7 +49,7 @@
         },
 
         "messageData": {
-          "$schema": "https://json-schema.org/draft-07/schema",
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
           "type": "object",
           "properties": {
             "typeMessage": {
@@ -57,7 +57,7 @@
             },
 
             "extendedTextMessageData": {
-              "$schema": "https://json-schema.org/draft-07/schema",
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
               "type": "object",
               "properties": {
                 "text": {
@@ -94,7 +94,7 @@
             },
 
             "TextMessageData": {
-              "$schema": "https://json-schema.org/draft-07/schema",
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
               "type": "object",
               "properties": {
                 "textMessage": {
@@ -106,7 +106,7 @@
             },
 
             "fileMessageData": {
-              "$schema": "https://json-schema.org/draft-07/schema",
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
               "type": "object",
               "properties": {
                 "downloadUrl": {
@@ -148,7 +148,7 @@
             },
 
             "contactMessageData": {
-              "$schema": "https://json-schema.org/draft-07/schema",
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
               "type": "object",
               "properties": {
                 "displayName": {
@@ -174,7 +174,7 @@
             },
 
             "pollMessageData": {
-              "$schema": "https://json-schema.org/draft-07/schema",
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
               "type": "object",
               "properties": {
                 "name": {
@@ -195,7 +195,7 @@
             },
 
             "locationMessageData": {
-              "$schema": "https://json-schema.org/draft-07/schema",
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
               "type": "object",
               "properties": {
                 "nameLocation": {
@@ -233,7 +233,7 @@
             },
 
             "extendedTextMessage": {
-              "$schema": "https://json-schema.org/draft-07/schema",
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
               "type": "object",
               "properties": {
                 "typeMessage": {
@@ -248,7 +248,7 @@
             },
 
             "statusExtendedTextMessageData": {
-              "$schema": "https://json-schema.org/draft-07/schema",
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
               "type": "object",
               "properties": {
                 "text": {
@@ -269,7 +269,7 @@
             },
 
             "fileMessage": {
-              "$schema": "https://json-schema.org/draft-07/schema",
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
               "type": "object",
               "properties": {
                 "typeMessage": {
@@ -284,7 +284,7 @@
             },
 
             "contactMessage": {
-              "$schema": "https://json-schema.org/draft-07/schema",
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
               "type": "object",
               "properties": {
                 "typeMessage": {
@@ -299,7 +299,7 @@
             },
 
             "pollMessage": {
-              "$schema": "https://json-schema.org/draft-07/schema",
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
               "type": "object",
               "properties": {
                 "typeMessage": {
@@ -314,7 +314,7 @@
             },
 
             "locationMessage": {
-              "$schema": "https://json-schema.org/draft-07/schema",
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
               "type": "object",
               "properties": {
                 "typeMessage": {
@@ -329,7 +329,7 @@
             },
 
             "quotedMessage": {
-              "$schema": "https://json-schema.org/draft-07/schema",
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
               "type": "object",
               "properties": {
                 "stanzaId": {
@@ -355,7 +355,7 @@
             },
 
             "groupInviteMessageData": {
-              "$schema": "https://json-schema.org/draft-07/schema",
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
               "type": "object",
               "properties": {
                 "groupJid": {

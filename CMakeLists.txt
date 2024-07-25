@@ -17,22 +17,13 @@ set(SOURCES
     source/logger.cpp
 )
 
-if(MSVC OR MSYS OR MINGW)
-    set(Poco_DIR "${CMAKE_SOURCE_DIR}/lib/poco")
-	find_package(Poco REQUIRED Util Net)
-else()
-	add_subdirectory("${CMAKE_SOURCE_DIR}/lib/poco/")
-endif()
+add_subdirectory("${CMAKE_SOURCE_DIR}/lib/poco/")
+add_subdirectory("${CMAKE_SOURCE_DIR}/lib/nlohmann_json")
+add_subdirectory("${CMAKE_SOURCE_DIR}/lib/nlohmann_json_schema_validator")
 
 include_directories(include)
 
 add_executable(whatsapp-api-webhook-server-cpp ${SOURCES})
-
-set(nlohmann_json_DIR "${CMAKE_SOURCE_DIR}/lib/nlohmann_json/")
-find_package(nlohmann_json CONFIG REQUIRED)
-
-add_subdirectory("${CMAKE_SOURCE_DIR}/lib/nlohmann_json_schema_validator")
-
 
 target_link_libraries(whatsapp-api-webhook-server-cpp
     Poco::Util

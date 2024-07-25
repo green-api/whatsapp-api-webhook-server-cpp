@@ -1,3 +1,34 @@
+#!/bin/bash
+
+user_adapter_cpp="source/user_adapter.cpp"
+user_adapter_h="include/user_adapter.h"
+user_adapter_template_cpp="source/_user_adapter.cpp"
+user_adapter_template_h="include/_user_adapter.h"
+
+if [ ! -f "$user_adapter_cpp" ] || [ ! -f "$user_adapter_h" ]; then
+    echo "Could not find '$user_adapter_cpp' and '$user_adapter_h' files. They are required for your functions."
+    echo "If you already have these files, please enter 'N' to cancel build and copy them manually."
+    echo "If you don't have these files, please enter 'Y' to create them."
+    
+    read -p "Create source/user_adapter.cpp and include/user_adapter.h files? [Y/N]: " userinput
+    
+    if [[ "$userinput" =~ ^[Yy]$ ]]; then
+        if [ -f "$user_adapter_template_cpp" ]; then
+            cp "$user_adapter_template_cpp" "$user_adapter_cpp"
+        fi
+        if [ -f "$user_adapter_template_h" ]; then
+            cp "$user_adapter_template_h" "$user_adapter_h"
+        fi
+    else
+        echo "Exiting script."
+        exit 1
+    fi
+fi
+
+if [ -f "$user_adapter_cpp" ] && [ -f "$user_adapter_h" ]; then
+    echo "User Adapter found."
+fi
+
 mkdir build
 
 git clone --branch=main --depth=1 https://github.com/pocoproject/poco lib/poco

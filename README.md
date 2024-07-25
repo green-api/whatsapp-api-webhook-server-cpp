@@ -10,7 +10,7 @@
 ### Clone library repository
 
 ```
-git clone --branch=main --depth=1 https://github.com/green-api/whatsapp-api-webhook-server-cpp
+git clone --branch=master --depth=1 https://github.com/green-api/whatsapp-api-webhook-server-cpp
 ```
 
 ### Windows

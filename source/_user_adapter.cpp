@@ -5,14 +5,20 @@
 // View documentation here:
 // https://green-api.com/en/docs/api/receiving/notifications-format/incoming-message/Webhook-IncomingMessageReceived/     
 void UserAdapter::onIncomingMessageReceived(greenapi::Response& body) {
+    // Every request contains typeWebhook. Requests are rejected, if no typeWebhook given.
     const auto typeWebhook = body.bodyJson["typeWebhook"];
+
+    // If a webhook is invalid, you could log a reason.
+    // Server respondes to client before UserAdapter function. Response based on validation result.
     if (body.error) {
-        greenapi::Logger::Log("Received invalid webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with error: ") + body.bodyStr, "info");
+        greenapi::Logger::Log("Received invalid webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with error: ") + body.bodyStr, "error");
         return;
     }
-    greenapi::Logger::Log("Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr, "info");
-    // Write your handler here:
 
+    // You can get request body using bodyStr:
+    greenapi::Logger::Log("Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr, "info");
+
+    // Write your function here:
 }
 
 // Outcoming message (from phone). Parameters:
@@ -26,8 +32,8 @@ void UserAdapter::onOutgoingMessageReceived(greenapi::Response& body) {
         return;
     }
     greenapi::Logger::Log("Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr, "info");
-    // Write your handler here:
-
+    
+    // Write your function here:
 }
 
 // Outcoming message (via API). Parameters:
@@ -41,8 +47,8 @@ void UserAdapter::onOutgoingAPIMessageReceived(greenapi::Response& body) {
         return;
     }
     greenapi::Logger::Log("Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr, "info");
-    // Write your handler here:
-
+    
+    // Write your function here:
 }
 
 // Status of a previously sent message: sent, delivered, read, etc. Parameters:
@@ -50,14 +56,20 @@ void UserAdapter::onOutgoingAPIMessageReceived(greenapi::Response& body) {
 // View documentation here:
 // https://green-api.com/en/docs/api/receiving/notifications-format/outgoing-message/OutgoingMessageStatus/
 void UserAdapter::onOutgoingMessageStatus(greenapi::Response& body) {
+    // Every request contains typeWebhook. Requests are rejected, if no typeWebhook given.
     const auto typeWebhook = body.bodyJson["typeWebhook"];
+
+    // If a webhook is invalid, you could log a reason.
+    // Server respondes to client before UserAdapter function. Response based on validation result.
     if (body.error) {
-        greenapi::Logger::Log("Received invalid webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with error: ") + body.bodyStr, "info");
+        greenapi::Logger::Log("Received invalid webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with error: ") + body.bodyStr, "error");
         return;
     }
-    greenapi::Logger::Log("Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr, "info");
-    // Write your handler here:
 
+    // You can get request body using bodyStr:
+    greenapi::Logger::Log("Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr, "info");
+
+    // Write your function here:
 }
 
 // Instance authorization status data. Parameters:
@@ -65,14 +77,17 @@ void UserAdapter::onOutgoingMessageStatus(greenapi::Response& body) {
 // View documentation here:
 // https://green-api.com/en/docs/api/receiving/notifications-format/StateInstanceChanged/
 void UserAdapter::onStateInstanceChanged(greenapi::Response& body) {
+    // Every request contains typeWebhook. Requests are rejected, if no typeWebhook given.
     const auto typeWebhook = body.bodyJson["typeWebhook"];
+
+    // If a webhook is invalid, you could log a reason.
+    // Server respondes to client before UserAdapter function. Response based on validation result.
     if (body.error) {
-        greenapi::Logger::Log("Received invalid webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with error: ") + body.bodyStr, "info");
+        greenapi::Logger::Log("Received invalid webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with error: ") + body.bodyStr, "error");
         return;
     }
-    greenapi::Logger::Log("Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr, "info");
-    // Write your handler here:
 
+    // Write your function here:
 }
 
 // Information about the contact's avatar based on the requested phone number. Parameters:
@@ -80,14 +95,20 @@ void UserAdapter::onStateInstanceChanged(greenapi::Response& body) {
 // View documentation here:
 // https://green-api.com/en/docs/api/receiving/notifications-format/AvatarInfo/
 void UserAdapter::onDeviceInfo(greenapi::Response& body) {
+    // Every request contains typeWebhook. Requests are rejected, if no typeWebhook given.
     const auto typeWebhook = body.bodyJson["typeWebhook"];
+
+    // If a webhook is invalid, you could log a reason.
+    // Server respondes to client before UserAdapter function. Response based on validation result.
     if (body.error) {
-        greenapi::Logger::Log("Received invalid webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with error: ") + body.bodyStr, "info");
+        greenapi::Logger::Log("Received invalid webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with error: ") + body.bodyStr, "error");
         return;
     }
-    greenapi::Logger::Log("Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr, "info");
-    // Write your handler here:
 
+    // You can get request body using bodyStr:
+    greenapi::Logger::Log("Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr, "info");
+
+    // Write your function here:
 }
 
 // Appears when there is an incoming call and contains information about the initiator and recipient of the call. Parameters:
@@ -95,14 +116,20 @@ void UserAdapter::onDeviceInfo(greenapi::Response& body) {
 // View documentation here:
 // https://green-api.com/en/docs/api/receiving/notifications-format/IncomingCall/
 void UserAdapter::onIncomingCall(greenapi::Response& body) {
+    // Every request contains typeWebhook. Requests are rejected, if no typeWebhook given.
     const auto typeWebhook = body.bodyJson["typeWebhook"];
+
+    // If a webhook is invalid, you could log a reason.
+    // Server respondes to client before UserAdapter function. Response based on validation result.
     if (body.error) {
-        greenapi::Logger::Log("Received invalid webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with error: ") + body.bodyStr, "info");
+        greenapi::Logger::Log("Received invalid webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with error: ") + body.bodyStr, "error");
         return;
     }
-    greenapi::Logger::Log("Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr, "info");
-    // Write your handler here:
 
+    // You can get request body using bodyStr:
+    greenapi::Logger::Log("Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr, "info");
+
+    // Write your function here:
 }
 
 // Socket state data (whether instance is ready to send/receive messages). Parameters:
@@ -110,24 +137,51 @@ void UserAdapter::onIncomingCall(greenapi::Response& body) {
 // View documentation here:
 // https://green-api.com/en/docs/api/receiving/notifications-format/StatusInstanceChanged/
 void UserAdapter::onStatusInstanceChanged(greenapi::Response& body) {
+    // Every request contains typeWebhook. Requests are rejected, if no typeWebhook given.
     const auto typeWebhook = body.bodyJson["typeWebhook"];
+
+    // If a webhook is invalid, you could log a reason.
+    // Server respondes to client before UserAdapter function. Response based on validation result.
     if (body.error) {
-        greenapi::Logger::Log("Received invalid webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with error: ") + body.bodyStr, "info");
+        greenapi::Logger::Log("Received invalid webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with error: ") + body.bodyStr, "error");
         return;
     }
-    greenapi::Logger::Log("Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr, "info");
-    // Write your handler here:
 
+    // You can get request body using bodyStr:
+    greenapi::Logger::Log("Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr, "info");
+
+    // Write your function here:
+}
+
+
+// Incoming webhook quotaExceeded contains data about exceeding chat limitations on the Developer plan. 
+// Parameters: [typeWebhook: string, instanceData: object, timestamp: integer, quotaData: object]
+// View documentation here:
+// https://green-api.com/en/docs/api/receiving/notifications-format/StatusInstanceChanged/        
+void UserAdapter::onQuotaExceeded(greenapi::Response& body) {
+    // Every request contains typeWebhook. Requests are rejected, if no typeWebhook given.
+    const auto typeWebhook = body.bodyJson["typeWebhook"];
+
+    // If a webhook is invalid, you could log a reason.
+    // Server respondes to client before UserAdapter function. Response based on validation result.
+    if (body.error) {
+        greenapi::Logger::Log("Received invalid webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with error: ") + body.bodyStr, "error");
+        return;
+    }
+
+    // You can get request body using bodyStr:
+    greenapi::Logger::Log("Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr, "info");
+
+    // Write your function here:
 }
 
 // Requests with unknown webhook type will be handled here.
 void UserAdapter::onUnknownTypeWebhook(greenapi::Response& body) {
+    // Every request contains typeWebhook. Requests are rejected, if no typeWebhook given.
     const auto typeWebhook = body.bodyJson["typeWebhook"];
-    if (body.error) {
-        greenapi::Logger::Log("Received invalid webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with error: ") + body.bodyStr, "info");
-        return;
-    }
+
+    // No error given to request, if it's unknown
     greenapi::Logger::Log("Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr, "info");
-    // Write your handler here:
     
+    // Write your function here:
 }

@@ -66,7 +66,7 @@ class UserAdapter {
         // Parameters: [typeWebhook: string, instanceData: object, timestamp: integer, quotaData: object]
         // View documentation here:
         // https://green-api.com/en/docs/api/receiving/notifications-format/StatusInstanceChanged/
-        #define ON_QUOTA_EXCEEDED_EXISTS
+        #define ON_STATUS_INSTANCE_CHANGED_EXISTS
         static void onQuotaExceeded(greenapi::Response& body);
 
         // Requests with unknown webhook type will be handled here.

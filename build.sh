@@ -1,23 +1,3 @@
-#!/bin/bash
-
-user_adapter_cpp="source/user_adapter.cpp"
-user_adapter_h="include/user_adapter.h"
-user_adapter_template_cpp="source/_user_adapter.cpp"
-user_adapter_template_h="include/_user_adapter.h"
-
-if [ ! -f "$user_adapter_cpp" ] || [ ! -f "$user_adapter_h" ]; then
-    echo "Could not find '$user_adapter_cpp' and '$user_adapter_h' files. They are required for your functions."
-    echo "If you already have these files, please copy them to '$user_adapter_cpp' and '$user_adapter_h'."
-    echo "If you dont have these files, please use a template, copy:"
-    echo "- '$user_adapter_template_cpp' to '$user_adapter_cpp'"
-    echo "- '$user_adapter_template_h' to '$user_adapter_h'"
-    exit 1
-fi
-
-if [ -f "$user_adapter_cpp" ] && [ -f "$user_adapter_h" ]; then
-    echo "User Adapter found."
-fi
-
 mkdir build
 
 git clone --branch=main --depth=1 https://github.com/pocoproject/poco lib/poco
@@ -36,7 +16,7 @@ cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_BUILD_TYPE=Release -DJSON_BuildTests:BOOL=
 cd ../../
 
 cd build
-cmake cmake -DCMAKE_BUILD_TYPE=Release -DJSON_BuildTests:BOOL="0" -DENABLE_XML:BOOL="0" -DENABLE_JSON:BOOL="0" -DENABLE_NETSSL:BOOL="0" -DENABLE_CRYPTO:BOOL="0" -DENABLE_JWT:BOOL="0" -DENABLE_DATA:BOOL="0" -DENABLE_DATA_SQLITE:BOOL="0" -DENABLE_DATA_MYSQL:BOOL="0" -DENABLE_DATA_POSTGRESQL:BOOL="0" -DENABLE_DATA_ODBC:BOOL="0" -DENABLE_MONGODB:BOOL="0" -DENABLE_REDIS:BOOL="0" -DENABLE_PDF:BOOL="0" -DENABLE_ZIP:BOOL="0" -DENABLE_SEVENZIP:BOOL="0" -DENABLE_APACHECONNECTOR:BOOL="0" -DENABLE_CPPPARSER:BOOL="0" -DENABLE_ENCODINGS:BOOL="0" -DENABLE_ENCODINGS_COMPILER:BOOL="0" -DENABLE_PAGECOMPILER:BOOL="0" -DENABLE_PAGECOMPILER_FILE2PAGE:BOOL="0" -DENABLE_POCODOC:BOOL="0" -DENABLE_TESTS:BOOL="0" -DENABLE_SAMPLES:BOOL="0" -DENABLE_LONG_RUNNING_TESTS:BOOL="0" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DJSON_BuildTests:BOOL="0" -DENABLE_XML:BOOL="0" -DENABLE_JSON:BOOL="0" -DENABLE_NETSSL:BOOL="0" -DENABLE_CRYPTO:BOOL="0" -DENABLE_JWT:BOOL="0" -DENABLE_DATA:BOOL="0" -DENABLE_DATA_SQLITE:BOOL="0" -DENABLE_DATA_MYSQL:BOOL="0" -DENABLE_DATA_POSTGRESQL:BOOL="0" -DENABLE_DATA_ODBC:BOOL="0" -DENABLE_MONGODB:BOOL="0" -DENABLE_REDIS:BOOL="0" -DENABLE_PDF:BOOL="0" -DENABLE_ZIP:BOOL="0" -DENABLE_SEVENZIP:BOOL="0" -DENABLE_APACHECONNECTOR:BOOL="0" -DENABLE_CPPPARSER:BOOL="0" -DENABLE_ENCODINGS:BOOL="0" -DENABLE_ENCODINGS_COMPILER:BOOL="0" -DENABLE_PAGECOMPILER:BOOL="0" -DENABLE_PAGECOMPILER_FILE2PAGE:BOOL="0" -DENABLE_POCODOC:BOOL="0" -DENABLE_TESTS:BOOL="0" -DENABLE_SAMPLES:BOOL="0" -DENABLE_LONG_RUNNING_TESTS:BOOL="0" ..
 cmake --build .
 
 rm bin/poco-arc

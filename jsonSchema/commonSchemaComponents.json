@@ -6,6 +6,31 @@
     "commonSchemaComponents": {
       "type": "object",
       "properties": {
+        "quotaData": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "method": {
+              "type": "string"
+            },
+            "used": {
+              "type": "integer"
+            },
+            "total": {
+              "type": "integer"
+            },
+            "status": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "required": ["method", "used", "total", "status", "description"],
+          "additionalProperties": true
+        },
+
+
         "instanceData": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "type": "object",
@@ -44,7 +69,7 @@
               "type": "string"
             }
           },
-          "required": ["chatId", "chatName", "sender", "senderName"],
+          "required": ["chatId", "sender", "senderName"],
           "additionalProperties": true
         },
 
@@ -190,7 +215,7 @@
                   "type": "boolean"
                 }
               },
-              "required": ["name", "options", "multipleAnswers"],
+              "required": ["name"],
               "additionalProperties": true
             },
 
@@ -347,9 +372,7 @@
               },
               "required": [
                 "stanzaId",
-                "participant",
-                "typeMessage",
-                "textMessage"
+                "participant"
               ],
               "additionalProperties": true
             },
@@ -403,22 +426,6 @@
           },
 
           "required": ["typeMessage"],
-          "anyOf": [
-            { "required": ["extendedTextMessageData"] },
-            { "required": ["TextMessageData"] },
-            { "required": ["fileMessageData"] },
-            { "required": ["contactMessageData"] },
-            { "required": ["pollMessageData"] },
-            { "required": ["locationMessageData"] },
-            { "required": ["extendedTextMessage"] },
-            { "required": ["statusExtendedTextMessageData"] },
-            { "required": ["fileMessage"] },
-            { "required": ["contactMessage"] },
-            { "required": ["pollMessage"] },
-            { "required": ["locationMessage"] },
-            { "required": ["quotedMessage"] },
-            { "required": ["groupInviteMessageData"] }
-          ],
           "additionalProperties": true
         }
       }

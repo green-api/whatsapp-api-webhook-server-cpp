@@ -3,7 +3,6 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "properties": {
-
     "stateInstanceChanged": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
       "type": "object",
@@ -157,26 +156,7 @@
           "$ref": "#/properties/commonSchemaComponents/properties/instanceData"
         },
         "quotaData": {
-          "type": "object",
-          "properties": {
-            "method": {
-              "type": "string"
-            },
-            "used": {
-              "type": "integer"
-            },
-            "total": {
-              "type": "integer"
-            },
-            "status": {
-              "type": "string"
-            },
-            "description": {
-              "type": "string"
-            }
-          },
-          "required": ["method", "used", "total", "status", "description"],
-          "additionalProperties": false
+          "$ref": "#/properties/commonSchemaComponents/properties/quotaData"
         }
       },
       "required": ["typeWebhook", "instanceData", "quotaData"],

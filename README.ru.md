@@ -141,10 +141,12 @@ cmake --build build --config=Release
 
 ```
 struct Response {
-    bool error = true; // error is true if incoming webhook failed to validate, false otherwise
-    std::string typeWebhook = ""; // webhookType taken from request body
-    std::string bodyStr = ""; // contains request body if error = false, otherwise contains validation error description
-    nlohmann::json bodyJson = ""; // body of incoming request
+```
+-    ```bool error = true; ``` — error is true if incoming webhook failed to validate, false otherwise;
+-    ```std::string typeWebhook = ""; — ``` webhookType taken from request body;
+-    ```std::string bodyStr = ""; ``` — contains request body if error = false, otherwise contains validation error description;
+-    ```nlohmann::json bodyJson = ""; — ``` body of incoming request;
+```
 };
 ```
 

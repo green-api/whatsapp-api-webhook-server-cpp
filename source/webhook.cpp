@@ -167,6 +167,12 @@ void RequestHandler::handleTypeWebhook(const std::string &typeWebhook, Response&
         #endif
         return;
     }
+    if (typeWebhook == "quotaExceeded") {
+        #ifdef ON_QUOTA_EXCEEDED_EXISTS
+            UserAdapter::onQuotaExceeded(body);
+        #endif
+        return;
+    }
     else if (typeWebhook != "") {
         #ifdef ON_UNKNOWN_TYPEWEBHOOK_EXISTS
             UserAdapter::onUnknownTypeWebhook(body);

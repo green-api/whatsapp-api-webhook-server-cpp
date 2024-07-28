@@ -14,7 +14,7 @@
 [![News](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/green_api)
 [![News](https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://whatsapp.com/channel/0029VaLj6J4LNSa2B5Jx6s3h)
 
-- [Документация на русском языке](https://github.com/green-api/whatsapp-api-webhook-server-cpp/blob/master/README.ru.md)
+- [Документация на русском языке](https://github.com/green-api/whatsapp-api-webhook-server-cpp/edit/master/README.ru.md).
 
 
 `whatsapp-api-webhook-server-cpp` — webhook server for integration with WhatsApp messenger using the API service [green-api.com](https://green-api.com/). 
@@ -77,7 +77,7 @@ build.bat
 
 Application is built at Release config by default.
 
-After successful build you could build it using ```build.bat``` or 
+After successful build you can build it using ```build.bat``` or 
 
 ```bash
 cmake --build build --config=Release
@@ -103,7 +103,7 @@ cd whatsapp-api-webhook-server-cpp
 
 Application is built at Release config by default.
 
-After successful build you could build it using ```.\build.sh``` or 
+After successful build you can build it using ```.\build.sh``` or 
 
 ```bash
 cmake --build build --config=Release
@@ -122,7 +122,7 @@ This project use ```config.json``` to set these variables:
 
 After starting the application, a server using values from config will be started. If no config exists, default values will be used.
 
-You could use [Postman collection](https://green-api.com/en/docs/postman-collection/) for server testing.
+You can use [Postman collection](https://green-api.com/en/docs/postman-collection/) for server testing.
 
 ## User Adapter
 
@@ -130,7 +130,7 @@ The user adapter located in:
 - ```sources/user_adapter.cpp```
 - ```include/user_adapter.h```
 
-If these files does not exist, create them using by renaming ```sources/_user_adapter.cpp``` and  ```include/_user_adapter.h```.
+If these files does not exist, create them by renaming ```sources/_user_adapter.cpp``` and  ```include/_user_adapter.h```.
 
 User Adapter contains your handlers for incoming webhooks. It works according to the following algorithm:
 1. Request to the server is received by ```webhook``` class;
@@ -141,10 +141,12 @@ The structure of ```Response``` object (response.h):
 
 ```
 struct Response {
-    bool error = true; // error is true if incoming webhook failed to validate, false otherwise
-    std::string typeWebhook = ""; // webhookType taken from request body
-    std::string bodyStr = ""; // contains request body if error = false, otherwise contains validation error description
-    nlohmann::json bodyJson = ""; // body of incoming request
+```
+-    ```bool error = true; ``` — error is true if incoming webhook failed to validate, false otherwise;
+-    ```std::string typeWebhook = ""; — ``` webhookType taken from request body;
+-    ```std::string bodyStr = ""; ``` — contains request body if error = false, otherwise contains validation error description;
+-    ```nlohmann::json bodyJson = ""; — ``` body of incoming request;
+```
 };
 ```
 

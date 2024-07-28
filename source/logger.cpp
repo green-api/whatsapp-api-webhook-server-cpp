@@ -6,7 +6,8 @@ namespace greenapi {
 };
 
 void greenapi::Logger::Log(const std::string &message, const std::string &level) {
-    std::string message_cleared = std::regex_replace(message, std::regex("[' ']{2,}"), "");
+    std::string message_cleared = std::regex_replace(message, std::regex(R"(/\s\s+/g)"), "");
+    message_cleared = std::regex_replace(message_cleared, std::regex("\t|  "), "");
     message_cleared = std::regex_replace(message_cleared, std::regex("\r\n|\r|\n"), "");
     
     std::ofstream logfile;

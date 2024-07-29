@@ -50,7 +50,7 @@ To receive a Webhook Token and be able to send requests into this server, the Wh
 
 This app uses C++ 17, CMake 3.5, supports Linux (GCC) and Windows (Visual Studio 2019/2022) compilers.
 
-Before building you should create these files (or copy existing ones if you have):
+Before building you should create these files (or copy existing ones if you have them):
 - ```include/user_adapter.h```
 - ```source/user_adapter.cpp```
 
@@ -121,7 +121,7 @@ git clone --branch=master --depth=1 https://github.com/green-api/whatsapp-api-we
 cd whatsapp-api-webhook-server-cpp
 ```
 
-Before building you should create these files (or copy existing ones if you have):
+Before building you should create these files (or copy existing ones if you have them):
 - ```include/user_adapter.h```
 - ```source/user_adapter.cpp```
 

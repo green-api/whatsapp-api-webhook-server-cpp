@@ -20,10 +20,6 @@ namespace greenapi {
             // If called, error is writing to r.bodyStr, logging the error
             static inline bool InteruptValidate(Response &r, const std::string &message);
             
-            /*  Returns: value, if key exists; else: nullptr    */
-            static const auto Get(const Response &key, const std::string &value);
-            static const auto Get(const nlohmann::json &key, const std::string &value);
-
             // This function called by Validate, returtns [false] if Response.bodyJson valid, [true] if Response.bodyJson has errors.
             static bool ProccessValidate(Response &r, const std::string &schemaName, const nlohmann::json &schemas);
             

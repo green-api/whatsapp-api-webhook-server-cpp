@@ -65,7 +65,7 @@ void RequestHandler::handleRequest(Poco::Net::HTTPServerRequest &req, Poco::Net:
 
         // Handling wrong JSON
         if (!nlohmann::json::accept(jsonStr)) {
-            Logger::Log("JSON is empty or invalid, aborting", "error");
+            Logger::Log("JSON is empty or invalid, aborting. This may be caused by trying to load URI with browser.", "error");
             resp.setStatus(Poco::Net::HTTPResponse::HTTP_BAD_REQUEST);
             std::ostream& out = resp.send();
             out << "";
@@ -87,6 +87,16 @@ void RequestHandler::handleRequest(Poco::Net::HTTPServerRequest &req, Poco::Net:
             out.flush();
             return;
         }
+        
+        // Invalid TypeWebhook, aborting
+        if (r.bodyJson["typeWebhook"].type() != nlohmann::json::value_t::string) {
+            Logger::Log("TypeWebhook is invalid, it should be string, unable to handle request", "error");
+            resp.setStatus(Poco::Net::HTTPResponse::HTTP_BAD_REQUEST);
+            std::ostream& out = resp.send();
+            out << "";
+            out.flush();
+            return;
+        }
 
         // TypeWebhook is available, ready to validate
         r.typeWebhook = r.bodyJson["typeWebhook"];
@@ -94,20 +104,30 @@ void RequestHandler::handleRequest(Poco::Net::HTTPServerRequest &req, Poco::Net:
         if (!r.error) {
             // Setting bodyStr to raw request body, if no error
             r.bodyStr = jsonStr;
+            
         }
 
-        // Setting the status based on validation
-        if (!r.error) {
-            resp.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
-        } else {
+        // Call user-defined functions for handling.
+        // Based on returned value, set response status (true: 400 Bad Request, false: 200 OK)
+        //
+        // If your request hang up, please check your function is getting only existing fields in JSON.
+        // Example:
+        //      const auto val = body.bodyJson["not-existing-value"];
+        // will cause debug assert (Debug) or abort function execution (Release)
+        // Check for contains() if value may not be exists, example:
+        //      const auto val = body.bodyJson.contains("not-existing-value") ? body.bodyJson["not-existing-value"] : nullptr;
+        bool handleError = handleTypeWebhook(r.typeWebhook, r, resp);
+        if (handleError) {
             resp.setStatus(Poco::Net::HTTPResponse::HTTP_BAD_REQUEST);
+        } else {
+            resp.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
         }
+
+        // Write answer
         std::ostream& out = resp.send();
         out << "";
         out.flush();
-
-        // This will forward request to user-defined functions
-        handleTypeWebhook(r.typeWebhook, r, resp);
+        
     } else {
         // Token in Authorization header is wrong
         resp.setStatus(Poco::Net::HTTPResponse::HTTP_UNAUTHORIZED);
@@ -117,68 +137,74 @@ void RequestHandler::handleRequest(Poco::Net::HTTPServerRequest &req, Poco::Net:
     }
 }
 
-// This is a bridge between greenapi library and user-defined functions
-void RequestHandler::handleTypeWebhook(const std::string &typeWebhook, Response& body, Poco::Net::HTTPServerResponse &resp) {
-    if (typeWebhook == "incomingMessageReceived") {
+// This is a bridge between green-api library and user-defined functions.
+// Returns: [true], if error; [false], if no error
+// If true, response with 200 OK sent for client, otherwise: 400 Bad Request sent
+bool RequestHandler::handleTypeWebhook(const std::string &typeWebhook, Response& body, Poco::Net::HTTPServerResponse &resp) {
+    // If your request hang up, please check your function is getting only existing fields in JSON.
+    // Example:
+    //      const auto val = body.bodyJson["not-existing-value"];
+    // will cause debug assert (Debug) or abort function execution (Release)
+    // Check for contains() if value may not be exists, example:
+    //      const auto val = body.bodyJson.contains("not-existing-value") ? body.bodyJson["not-existing-value"] : nullptr;
+
+    bool error {true};
+    if (body.error) {
+        #ifdef ON_ERROR_VALIDATION_EXISTS
+            error = UserAdapter::onErrorValidation(body);
+        #endif
+    }
+    else if (typeWebhook == "incomingMessageReceived") {
         #ifdef ON_INCOMING_MESSAGE_RECEIVED_EXISTS
-            UserAdapter::onIncomingMessageReceived(body);
+            error = UserAdapter::onIncomingMessageReceived(body);
         #endif
-        return;
     }
-    if (typeWebhook == "deviceInfo") {
+    else if (typeWebhook == "deviceInfo") {
         #ifdef ON_DEVICE_INFO_EXISTS
-            UserAdapter::onDeviceInfo(body);
+            error = UserAdapter::onDeviceInfo(body);
         #endif
-        return;
     }
-    if (typeWebhook == "incomingCall") {
+    else if (typeWebhook == "incomingCall") {
         #ifdef ON_INCOMING_CALL_EXISTS
-            UserAdapter::onIncomingCall(body);
+            error = UserAdapter::onIncomingCall(body);
         #endif
-        return;
     }
-    if (typeWebhook == "outgoingAPIMessageReceived") {
+    else if (typeWebhook == "outgoingAPIMessageReceived") {
         #ifdef ON_OUTGOING_API_MESSAGE_RECEIVED_EXISTS
-            UserAdapter::onOutgoingAPIMessageReceived(body);
+            error = UserAdapter::onOutgoingAPIMessageReceived(body);
         #endif
-        return;
     }
-    if (typeWebhook == "outgoingMessageReceived") {
+    else if (typeWebhook == "outgoingMessageReceived") {
         #ifdef ON_OUTGOING_MESSAGE_RECEIVED_EXISTS
-            UserAdapter::onOutgoingMessageReceived(body);
+            error = UserAdapter::onOutgoingMessageReceived(body);
         #endif
-        return;
     }
-    if (typeWebhook == "outgoingMessageStatus") {
+    else if (typeWebhook == "outgoingMessageStatus") {
         #ifdef ON_OUTGOING_MESSAGE_STATUS_EXISTS
-            UserAdapter::onOutgoingMessageStatus(body);
+            error = UserAdapter::onOutgoingMessageStatus(body);
         #endif
-        return;
     }
-    if (typeWebhook == "stateInstanceChanged") {
+    else if (typeWebhook == "stateInstanceChanged") {
         #ifdef ON_STATE_INSTANCE_CHANGED_EXISTS
-            UserAdapter::onStateInstanceChanged(body);
+            error = UserAdapter::onStateInstanceChanged(body);
         #endif
-        return;
     }
-    if (typeWebhook == "statusInstanceChanged") {
+    else if (typeWebhook == "statusInstanceChanged") {
         #ifdef ON_STATUS_INSTANCE_CHANGED_EXISTS
-            UserAdapter::onStatusInstanceChanged(body);
+            error = UserAdapter::onStatusInstanceChanged(body);
         #endif
-        return;
     }
-    if (typeWebhook == "quotaExceeded") {
+    else if (typeWebhook == "quotaExceeded") {
         #ifdef ON_QUOTA_EXCEEDED_EXISTS
-            UserAdapter::onQuotaExceeded(body);
+            error = UserAdapter::onQuotaExceeded(body);
         #endif
-        return;
     }
     else if (typeWebhook != "") {
         #ifdef ON_UNKNOWN_TYPEWEBHOOK_EXISTS
-            UserAdapter::onUnknownTypeWebhook(body);
+            error = UserAdapter::onUnknownTypeWebhook(body);
         #endif
-        return;
     }
+    return error;
 }
 
 // HandlerFactory needs Pattern and WebhookToken for passing it to request handler

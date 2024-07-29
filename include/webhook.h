@@ -56,7 +56,11 @@ namespace greenapi {
                 Poco::Net::HTTPServerRequest &req, 
                 Poco::Net::HTTPServerResponse &resp
             );
-            void handleTypeWebhook(
+            // returns true if error while handling, false if no error during handling
+            // based on this status, response will set status:
+            // 200 OK: if handleTypeWebhook returns false and no error while validation
+            // 400 Bad Request: if handleTypeWebhook returns true or request validation has error
+            bool handleTypeWebhook(
                 const std::string &typeWebhook, 
                 Response& body,
                 Poco::Net::HTTPServerResponse &resp

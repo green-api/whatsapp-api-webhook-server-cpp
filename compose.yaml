@@ -1,5 +1,5 @@
 services:
-  webhook:
+  whatsapp-api-webhook-server-cpp:
     build: .
     ports:
       - 5000:5000

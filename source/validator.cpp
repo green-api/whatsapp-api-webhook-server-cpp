@@ -2,20 +2,6 @@
 
 using namespace greenapi;
 
-//  Returns:
-//  -- Value, if key exists
-//  -- nullptr, else
-const auto Validator::Get(const Response &key, const std::string &value) {
-    return key.bodyJson.contains(value) ? key.bodyJson[value] : nullptr;
-}
-
-//  Returns:
-//  -- Value, if key exists
-//  -- nullptr, else
-const auto Validator::Get(const nlohmann::json &key, const std::string &value) {
-    return key.contains(value) ? key[value] : nullptr;
-}
-
 //  If called, error is writing to r.bodyStr, logging the error
 bool Validator::InteruptValidate(Response &r, const std::string& message) {
     r.bodyStr += message;
@@ -29,14 +15,12 @@ void Validator::Validate(Response &r, nlohmann::json &schemas) {
     bool exists {false};
     bool check {false};
     bool err {false};
-    const auto TypeWebhook = Validator::Get(r, "typeWebhook");
-    check = (TypeWebhook.type() == nlohmann::json::value_t::string); exists = (TypeWebhook != nullptr);
-    if (!exists) {
+    const auto TypeWebhook = r.bodyJson.contains("typeWebhook") ? r.bodyJson["typeWebhook"] : nullptr;
+    if (TypeWebhook == nullptr) {
         InteruptValidate(r, "No typeWebhook given, aborting validation");
         r.error = true; 
         return;
-    }
-    else if (!check) {
+    } else if (TypeWebhook.type() != nlohmann::json::value_t::string) {
         InteruptValidate(r, "Wrong typeWebhook type given, aborting validation");
         r.error = true; 
         return;

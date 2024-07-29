@@ -14,7 +14,7 @@
 [![News](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/green_api)
 [![News](https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://whatsapp.com/channel/0029VaLj6J4LNSa2B5Jx6s3h)
 
-- [Документация на русском языке](https://github.com/green-api/whatsapp-api-webhook-server-cpp/edit/master/README.ru.md).
+- [Документация на русском языке](https://github.com/green-api/whatsapp-api-webhook-server-cpp/blob/master/README.ru.md).
 
 
 `whatsapp-api-webhook-server-cpp` — webhook server for integration with WhatsApp messenger using the API service [green-api.com](https://green-api.com/). 
@@ -29,6 +29,7 @@ There is a free developer account tariff.
   - [Building the app](#building-the-app)
     - [Windows](#windows)
     - [Linux](#linux)
+    - [Docker](#docker)
   - [Running the app](#running-the-app)
   - [User Adapter](#user-adapter)
   - [Examples](#examples)
@@ -109,6 +110,36 @@ After successful build you can build it using ```.\build.sh``` or
 cmake --build build --config=Release
 ```
 
+### Docker
+
+To run this project with Docker, you need Docker and Docker Compose.
+
+Clone the repository:
+
+```bash
+git clone --branch=master --depth=1 https://github.com/green-api/whatsapp-api-webhook-server-cpp
+cd whatsapp-api-webhook-server-cpp
+```
+
+Before running Docker you should create these files:
+- ```include/user_adapter.h```
+- ```source/user_adapter.cpp```
+
+You could do it by renaming with removing underscore from ```include/_user_adapter.h``` and ```source/_user_adapter.h``` files.
+
+By default, ```port 5000``` is exposed. If you would like to change it, you need:
+- Change ```Address``` field in ```config.json``` to your desired port;
+- Change ```ports``` field in ```compose.yaml``` to your desired port;
+
+Run Docker image with Docker Compose:
+
+```bash
+docker compose up --build whatsapp-api-webhook-server-cpp
+```
+
+Server will be started after building automatically.
+
+
 ## Running the app
 
 The application binary is placed in ```build/bin/```.
@@ -136,6 +167,7 @@ User Adapter contains your handlers for incoming webhooks. It works according to
 1. Request to the server is received by ```webhook``` class;
 2. ```webhook``` class creates ```Response``` object and transmits request body to the ```validator``` class.
 3. After validation, ```Response``` object transmits into ```UserAdapter``` handler, based on request's body ```webToken```.
+4. ```User Adapter``` function returns ```true``` if error or ```false``` if no error. Based in this value, server will return 200 OK or 400 Bad Request status.
 
 The structure of ```Response``` object (response.h):
 
@@ -154,7 +186,7 @@ struct Response {
 
 ```
 #define ON_WEBHOOK_TYPE_EXISTS
-static void onWebhookType(greenapi::Response& body);
+static bool onWebhookType(greenapi::Response& body);
 ```
 
 A #define is used by ```webhook``` class. You could safely remove unnessesary for you UserAdapter functions.
@@ -164,15 +196,23 @@ A #define is used by ```webhook``` class. You could safely remove unnessesary fo
 In this example, handler will be called by webhook with type ```IncomingMessageReceived```. Using the structure ```Response``` above, you could check for validate of request (```body.error```), work with webhook json structure (```body.bodyJson```) or get access to webhook raw body (```body.bodyStr```).
 
 ```
-void UserAdapter::onIncomingMessageReceived(greenapi::Response& body) {
+bool UserAdapter::onIncomingMessageReceived(greenapi::Response& body) {
+    // Every request contains typeWebhook. Requests are rejected, if no typeWebhook given.
     const auto typeWebhook = body.bodyJson["typeWebhook"];
-    if (body.error) {
-        greenapi::Logger::Log("Received invalid webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with error: ") + body.bodyStr, "info");
-        return;
-    }
+
+    // If you encountered errors while hanlding, you should return true.
+    // It will change response status to 400 Bad Request with immediate return of the HTTP request result
+    // 
+    // if (<error>) {
+    //    return true;
+    //}
+
     greenapi::Logger::Log("Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr, "info");
+
     // Write your handler here:
 
+    // Return false if no error, after this 200 OK response will be returned
+    return false;
 }
 ```
 

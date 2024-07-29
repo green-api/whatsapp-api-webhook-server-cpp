@@ -29,6 +29,7 @@
   - [Сборка приложения](#сборка-приложения)
     - [Windows](#windows)
     - [Linux](#linux)
+    - [Docker](#docker)
   - [Запуск приложения](#запуск-приложения)
   - [User Adapter](#user-adapter)
   - [Примеры](#примеры)
@@ -109,6 +110,35 @@ cd whatsapp-api-webhook-server-cpp
 cmake --build build --config=Release
 ```
 
+### Docker
+
+Для запуска сервера через Docker, вам понадобится Docker и Docker Compose.
+
+Сделайте git clone для загрузки проекта и перейдите в директорию:
+
+```bash
+git clone --branch=master --depth=1 https://github.com/green-api/whatsapp-api-webhook-server-cpp
+cd whatsapp-api-webhook-server-cpp
+```
+
+Перед сборкой вам необходимо создать эти файлы:
+- ```include/user_adapter.h```
+- ```source/user_adapter.cpp```
+
+Переименуйте следующие файлы, удалив нижнее подчеркивание из названия: ```include/_user_adapter.h``` и ```source/_user_adapter.h```.
+
+По умолчанию в образе открыт ```port 5000```. Если вы хотите изменить порт, тогда:
+- Поменяйте поле ```Address``` в ```config.json``` на требуемый вами порт;
+- Поменяйте поле ```ports``` в ```compose.yaml``` на требуемый вами порт;
+
+Запустите Docker образ с помощью Docker Compose:
+
+```bash
+docker compose up --build whatsapp-api-webhook-server-cpp
+```
+
+Сервер будет запущен автоматически после сборки проекта.
+
 ## Запуск приложения
 
 Исполняемый файл приложения находится в ```build/bin/```.
@@ -135,7 +165,8 @@ cmake --build build --config=Release
 Адаптер для пользователя содержит ваши обработчики вебхуков. Программа работает по следующему алгоритму:
 1. Запрос к серверу принимает класс ```webhook```;
 2. Класс ```webhook``` создает объект ```Response``` и передает тело запроса классу ```Validator```.
-3. После проверки, объект ```Response``` передается в обработчик ```UserAdapter``` на основе ```webToken``` в теле запроса.
+3. После проверки, объект ```Response``` передается в обработчик ```User Adapter``` на основе ```webToken``` в теле запроса.
+4. Функция обработки в ```User Adapter``` возвращает ```true``` в случае ошибки или ```false```, если обработка произошла без ошибок. На основе этого значения, сервер вернет или 200 OK или 400 Bad Request.
 
 Структура объекта ```Response``` (response.h):
 
@@ -154,7 +185,7 @@ struct Response {
 
 ```
 #define ON_WEBHOOK_TYPE_EXISTS
-static void onWebhookType(greenapi::Response& body);
+static bool onWebhookType(greenapi::Response& body);
 ```
 
 #define используется классом ```webhook```. Вы можете безопасно удалить неиспользуемые вами функции в UserAdapter.
@@ -164,15 +195,23 @@ static void onWebhookType(greenapi::Response& body);
 В данном примере, обработчик будет вызван вебхуком с типом ```IncomingMessageReceived```. С помощью структуры ```Response```, описанной выше, вы можете проверить результат валидации запроса (```body.error```), обратиться к json структуре вебхука (```body.bodyJson```) или получить доступ к телу запроса (```body.bodyStr```).
 
 ```
-void UserAdapter::onIncomingMessageReceived(greenapi::Response& body) {
+bool UserAdapter::onIncomingMessageReceived(greenapi::Response& body) {
+    // Every request contains typeWebhook. Requests are rejected, if no typeWebhook given.
     const auto typeWebhook = body.bodyJson["typeWebhook"];
-    if (body.error) {
-        greenapi::Logger::Log("Received invalid webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with error: ") + body.bodyStr, "info");
-        return;
-    }
+
+    // If you encountered errors while hanlding, you should return true.
+    // It will change response status to 400 Bad Request with immediate return of the HTTP request result
+    // 
+    // if (<error>) {
+    //    return true;
+    //}
+
     greenapi::Logger::Log("Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr, "info");
+
     // Write your handler here:
 
+    // Return false if no error, after this 200 OK response will be returned
+    return false;
 }
 ```
 

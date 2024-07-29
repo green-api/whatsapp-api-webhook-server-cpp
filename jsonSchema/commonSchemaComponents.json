@@ -422,10 +422,56 @@
                 "jpegThumbnail"
               ],
               "additionalProperties": true
+            },
+            "buttonsMessage": {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object"
+            },
+            "listMessage": {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object"
+            },
+            "templateMessage": {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object"
+            },
+            "buttonsResponseMessage": {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object"
+            },
+            "templateButtonReplyMessage": {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object"
+            },
+            "listResponseMessage": {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object"
             }
           },
 
           "required": ["typeMessage"],
+          "anyOf": [
+            { "required": ["extendedTextMessageData"] },
+            { "required": ["TextMessageData"] },
+            { "required": ["fileMessageData"] },
+            { "required": ["contactMessageData"] },
+            { "required": ["pollMessageData"] },
+            { "required": ["locationMessageData"] },
+            { "required": ["extendedTextMessage"] },
+            { "required": ["statusExtendedTextMessageData"] },
+            { "required": ["fileMessage"] },
+            { "required": ["contactMessage"] },
+            { "required": ["pollMessage"] },
+            { "required": ["locationMessage"] },
+            { "required": ["quotedMessage"] },
+            { "required": ["groupInviteMessageData"] }, 
+            { "required": ["buttonsMessage"] },
+            { "required": ["listMessage"] },
+            { "required": ["templateMessage"] },
+            { "required": ["buttonsResponseMessage"] },
+            { "required": ["templateButtonReplyMessage"] },
+            { "required": ["listResponseMessage"] }
+          ],
           "additionalProperties": true
         }
       }

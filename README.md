@@ -50,11 +50,11 @@ To receive a Webhook Token and be able to send requests into this server, the Wh
 
 This app uses C++ 17, CMake 3.5, supports Linux (GCC) and Windows (Visual Studio 2019/2022) compilers.
 
-Before building you should create these files:
+Before building you should create these files (or copy existing ones if you have):
 - ```include/user_adapter.h```
 - ```source/user_adapter.cpp```
 
-You could do it by renaming with removing underscore from ```include/_user_adapter.h``` and ```source/_user_adapter.h``` files. 
+If you don't have required fiels, create them by renaming with removing underscore from ```include/_user_adapter.h``` and ```source/_user_adapter.h``` files. 
 
 **This project will not build if you won't do it**.
 
@@ -121,11 +121,11 @@ git clone --branch=master --depth=1 https://github.com/green-api/whatsapp-api-we
 cd whatsapp-api-webhook-server-cpp
 ```
 
-Before running Docker you should create these files:
+Before building you should create these files (or copy existing ones if you have):
 - ```include/user_adapter.h```
 - ```source/user_adapter.cpp```
 
-You could do it by renaming with removing underscore from ```include/_user_adapter.h``` and ```source/_user_adapter.h``` files.
+If you don't have required fiels, create them by renaming with removing underscore from ```include/_user_adapter.h``` and ```source/_user_adapter.h``` files. 
 
 By default, ```port 5000``` is exposed. If you would like to change it, you need:
 - Change ```Address``` field in ```config.json``` to your desired port;

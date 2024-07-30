@@ -127,7 +127,7 @@ cmake --build build --config=Release
 
 Запуск приложения:
 ```bash
-.\build\bin\whatsapp-api-webhook-server-cpp
+./build/bin/whatsapp-api-webhook-server-cpp
 ```
 
 При исполнении программы создается сервер на порте из конфигурации ```config.json``` (по умолчанию 5000). Подробное описание конфигурации доступно [здесь](#запуск-приложения).

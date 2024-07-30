@@ -253,7 +253,7 @@ bool UserAdapter::onIncomingMessageReceived(greenapi::Response& body) {
 
 ## Примеры
 
-Примерны доступны в [examples.cpp](./examples/user_adapter_example.cpp).
+Примерны доступны в [user_adapter_example.cpp](./examples/user_adapter_example.cpp).
 
 ## Документация по методам вебхуков
 

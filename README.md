@@ -256,7 +256,7 @@ bool UserAdapter::onIncomingMessageReceived(greenapi::Response& body) {
 
 ## Examples
 
-Examples are available in [examples.cpp](./examples/user_adapter_example.cpp).
+Examples are available in [user_adapter_example.cpp](./examples/user_adapter_example.cpp).
 
 ## JSON Validation
 

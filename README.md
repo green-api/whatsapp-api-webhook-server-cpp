@@ -81,7 +81,7 @@ cd whatsapp-api-webhook-server-cpp
 build.bat
 ```
 
-Application is built at Release config by default.
+Application is built at Release config by default. Config file ```config.json``` and directory ```jsonSchema``` are copied to ```build\bin``` directory. The application prioritize ```build\bin``` files over ```.``` directory.
 
 After successful build you can build it using ```build.bat``` or 
 
@@ -89,7 +89,7 @@ After successful build you can build it using ```build.bat``` or
 cmake --build build --config=Release
 ```
 
-Run this application:
+Run the application:
 
 ```bash
 start build\bin\whatsapp-api-webhook-server-cpp.exe
@@ -115,7 +115,7 @@ cd whatsapp-api-webhook-server-cpp
 .\build.sh
 ```
 
-Application is built at Release config by default.
+Application is built at Release config by default. Config file ```config.json``` and directory ```jsonSchema``` are copied to ```build/bin``` directory. The application will prioritize ```build/bin``` files over ```.``` directory.
 
 After successful build you can build it using ```.\build.sh``` or 
 
@@ -123,7 +123,7 @@ After successful build you can build it using ```.\build.sh``` or
 cmake --build build --config=Release
 ```
 
-Run this application:
+Run the application:
 
 ```bash
 ./build/bin/whatsapp-api-webhook-server-cpp
@@ -179,7 +179,9 @@ This project use ```config.json``` to set these variables:
 
 - WebhookToken (default: **none**). Authorization token, must be equal to a token declared in your green-api instance (none dy default). [Instance setup](https://green-api.com/en/docs/api/receiving/technology-webhook-endpoint/#webhookUrl);
 
-- LoggingType (default: ```console```). Available values: ```logger```, ```console```. With ```logger``` all logs will be saved to file, with ```console``` all logs will be printed with std::cout;
+- LogToFile (default: ```false```). Defines the creation logger of a file and writing logs to it by program. Available values: true, false.
+
+- LogToConsole (default: ```true```). Defines writing logs into console by program. Available values: true, false.
 
 - LoggerFilename (default: ```log.txt```). Filename for logger's file.
 
@@ -260,7 +262,7 @@ Examples are available in [user_adapter_example.cpp](./examples/user_adapter_exa
 
 ## JSON Validation
 
-JSON schemas for webhooks validation are placed in ```jsonSchema``` directory and copied to build directory while running build script. You could add any ```.json``` files to ```jsonSchema```, they will be loaded into a program while it starting.
+JSON schemas for webhooks validation are placed in ```jsonSchema``` directory and copied to build directory while running build script. You could add any ```.json``` files to ```build/bin/jsonSchema```, they will be loaded into a program while it starting.
 
 JSON schemas have this structure:
 

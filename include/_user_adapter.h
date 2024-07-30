@@ -18,7 +18,6 @@ class UserAdapter {
         // View documentation here:
         // https://green-api.com/en/docs/api/receiving/notifications-format/incoming-message/Webhook-IncomingMessageReceived/
         // Returns: [true], if error; [false], if no error
-        #define ON_INCOMING_MESSAGE_RECEIVED_EXISTS
         static bool onIncomingMessageReceived(greenapi::Response& body);
 
         // Outcoming message (from phone). Parameters:
@@ -26,7 +25,6 @@ class UserAdapter {
         // View documentation here:
         // https://green-api.com/en/docs/api/receiving/notifications-format/outgoing-message/OutgoingMessage/
         // Returns: [true], if error; [false], if no error
-        #define ON_OUTGOING_MESSAGE_RECEIVED_EXISTS
         static bool onOutgoingMessageReceived(greenapi::Response& body);
 
         // Outcoming message (via API). Parameters:
@@ -34,7 +32,6 @@ class UserAdapter {
         // View documentation here:
         // https://green-api.com/en/docs/api/receiving/notifications-format/outgoing-message/OutgoingApiMessage/
         // Returns: [true], if error; [false], if no error
-        #define ON_OUTGOING_API_MESSAGE_RECEIVED_EXISTS
         static bool onOutgoingAPIMessageReceived(greenapi::Response& body);
         
         // Status of a previously sent message: sent, delivered, read, etc. Parameters:
@@ -42,7 +39,6 @@ class UserAdapter {
         // View documentation here:
         // https://green-api.com/en/docs/api/receiving/notifications-format/outgoing-message/OutgoingMessageStatus/
         // Returns: [true], if error; [false], if no error
-        #define ON_OUTGOING_MESSAGE_STATUS_EXISTS
         static bool onOutgoingMessageStatus(greenapi::Response& body);
 
         // Instance authorization status data. Parameters:
@@ -50,7 +46,6 @@ class UserAdapter {
         // View documentation here:
         // https://green-api.com/en/docs/api/receiving/notifications-format/StateInstanceChanged/
         // Returns: [true], if error; [false], if no error
-        #define ON_STATE_INSTANCE_CHANGED_EXISTS
         static bool onStateInstanceChanged(greenapi::Response& body);
 
         // Information about the contact's avatar based on the requested phone number. Parameters:
@@ -58,7 +53,6 @@ class UserAdapter {
         // View documentation here:
         // https://green-api.com/en/docs/api/receiving/notifications-format/AvatarInfo/
         // Returns: [true], if error; [false], if no error
-        #define ON_DEVICE_INFO_EXISTS
         static bool onDeviceInfo(greenapi::Response& body);
 
         // Appears when there is an incoming call and contains information about the initiator and recipient of the call. Parameters:
@@ -66,7 +60,6 @@ class UserAdapter {
         // View documentation here:
         // https://green-api.com/en/docs/api/receiving/notifications-format/IncomingCall/
         // Returns: [true], if error; [false], if no error
-        #define ON_INCOMING_CALL_EXISTS
         static bool onIncomingCall(greenapi::Response& body);
 
         // Socket state data (whether instance is ready to send/receive messages). Parameters:
@@ -74,7 +67,6 @@ class UserAdapter {
         // View documentation here:
         // https://green-api.com/en/docs/api/receiving/notifications-format/StatusInstanceChanged/
         // Returns: [true], if error; [false], if no error
-        #define ON_STATUS_INSTANCE_CHANGED_EXISTS
         static bool onStatusInstanceChanged(greenapi::Response& body);
 
         // Incoming webhook quotaExceeded contains data about exceeding chat limitations on the Developer plan. 
@@ -82,17 +74,14 @@ class UserAdapter {
         // View documentation here:
         // https://green-api.com/en/docs/api/receiving/notifications-format/StatusInstanceChanged/
         // Returns: [true], if error; [false], if no error
-        #define ON_QUOTA_EXCEEDED_EXISTS
         static bool onQuotaExceeded(greenapi::Response& body);
 
         // Handle error here: output error description and make other error handling
         // Returns: [true], if error; [false], if no error
-        #define ON_ERROR_VALIDATION_EXISTS
         static bool onErrorValidation(greenapi::Response& body);
 
         // Requests with unknown webhook type will be handled here.
         // Returns: [true], if error; [false], if no error
-        #define ON_UNKNOWN_TYPEWEBHOOK_EXISTS
         static bool onUnknownTypeWebhook(greenapi::Response& body);
     private:
         UserAdapter() {}

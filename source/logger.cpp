@@ -1,39 +1,34 @@
 #include "logger.h"
 
 namespace greenapi {
-    std::string logCfgType {"console"};
-    std::string logCfgFilename{"log.txt"};
+    bool logToFile {false};
+    bool logToConsole {true};
+    std::string loggerFilename{"log.txt"};
 };
 
 void greenapi::Logger::Log(const std::string &message, const std::string &level) {
     std::string message_cleared = std::regex_replace(message, std::regex(R"(/\s\s+/g)"), "");
     message_cleared = std::regex_replace(message_cleared, std::regex("\t|  "), "");
     message_cleared = std::regex_replace(message_cleared, std::regex("\r\n|\r|\n"), "");
+
+    std::string messageLog = "{ \"timestamp\": \"" + Logger::getCurrentTime() + "\", \"level\": \"" + level + "\", \"message\": \"" + message_cleared + "\" }";
     
     std::ofstream logfile;
-    if (greenapi::logCfgType == "logger") {
-        logfile.open(greenapi::logCfgFilename, std::ios::app);
+    if (greenapi::logToFile) {
+        logfile.open(greenapi::loggerFilename, std::ios::app);
         if (!logfile.is_open()) {
             std::cout << "Unable to open log.txt file. Falling back to console output.\n";
-            logCfgType = "console";
+            logToConsole = true;
+            logToFile = false;
+        } else {
+            logfile << messageLog << std::endl;
         }
+        logfile.close();
     }
 
-    if (level == "error") {
-		std::string messageLog = "{ \"timestamp\": \"" + Logger::getCurrentTime() + "\", \"level\": \"" + level + "\", \"message\": \"" + message_cleared + "\" }";
-		std::cout << messageLog << std::endl;
-        if (greenapi::logCfgType == "logger") {
-            logfile << messageLog << std::endl;
-        }
-    } else {
-        std::string messageLog = "{ \"timestamp\": \"" + Logger::getCurrentTime() + "\", \"level\": \"" + level + "\", \"message\": \"" + message_cleared + "\" }";
-        if (greenapi::logCfgType == "console") {
-            std::cout << messageLog << std::endl;
-        } else if (greenapi::logCfgType == "logger") {
-            logfile << messageLog << std::endl;
-        }
+    if (greenapi::logToConsole) {
+        std::cout << messageLog << std::endl;
     }
-    logfile.close();
 }
 
 const std::string greenapi::Logger::getCurrentTime() {

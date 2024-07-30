@@ -68,7 +68,7 @@ void RequestHandler::handleRequest(Poco::Net::HTTPServerRequest &req, Poco::Net:
             Logger::Log("JSON is empty or invalid, aborting. This may be caused by trying to load URI with browser.", "error");
             resp.setStatus(Poco::Net::HTTPResponse::HTTP_BAD_REQUEST);
             std::ostream& out = resp.send();
-            out << "";
+            out << "This is a WhatsApp API Webhook server developed by Green-API.\nIf you want to make a request to this server, please view webhooks documentation: https://green-api.com/en/docs/api/receiving/notifications-format/\n\nGREEN API (c) 2015 - 2024";
             out.flush();
             return;
         }
@@ -150,59 +150,37 @@ bool RequestHandler::handleTypeWebhook(const std::string &typeWebhook, Response&
 
     bool error {true};
     if (body.error) {
-        #ifdef ON_ERROR_VALIDATION_EXISTS
-            error = UserAdapter::onErrorValidation(body);
-        #endif
+        error = UserAdapter::onErrorValidation(body);
     }
     else if (typeWebhook == "incomingMessageReceived") {
-        #ifdef ON_INCOMING_MESSAGE_RECEIVED_EXISTS
-            error = UserAdapter::onIncomingMessageReceived(body);
-        #endif
+        error = UserAdapter::onIncomingMessageReceived(body);
     }
     else if (typeWebhook == "deviceInfo") {
-        #ifdef ON_DEVICE_INFO_EXISTS
-            error = UserAdapter::onDeviceInfo(body);
-        #endif
+        error = UserAdapter::onDeviceInfo(body);
     }
     else if (typeWebhook == "incomingCall") {
-        #ifdef ON_INCOMING_CALL_EXISTS
-            error = UserAdapter::onIncomingCall(body);
-        #endif
+        error = UserAdapter::onIncomingCall(body);
     }
     else if (typeWebhook == "outgoingAPIMessageReceived") {
-        #ifdef ON_OUTGOING_API_MESSAGE_RECEIVED_EXISTS
-            error = UserAdapter::onOutgoingAPIMessageReceived(body);
-        #endif
+        error = UserAdapter::onOutgoingAPIMessageReceived(body);
     }
     else if (typeWebhook == "outgoingMessageReceived") {
-        #ifdef ON_OUTGOING_MESSAGE_RECEIVED_EXISTS
-            error = UserAdapter::onOutgoingMessageReceived(body);
-        #endif
+        error = UserAdapter::onOutgoingMessageReceived(body);
     }
     else if (typeWebhook == "outgoingMessageStatus") {
-        #ifdef ON_OUTGOING_MESSAGE_STATUS_EXISTS
-            error = UserAdapter::onOutgoingMessageStatus(body);
-        #endif
+        error = UserAdapter::onOutgoingMessageStatus(body);
     }
     else if (typeWebhook == "stateInstanceChanged") {
-        #ifdef ON_STATE_INSTANCE_CHANGED_EXISTS
-            error = UserAdapter::onStateInstanceChanged(body);
-        #endif
+        error = UserAdapter::onStateInstanceChanged(body);
     }
     else if (typeWebhook == "statusInstanceChanged") {
-        #ifdef ON_STATUS_INSTANCE_CHANGED_EXISTS
-            error = UserAdapter::onStatusInstanceChanged(body);
-        #endif
+        error = UserAdapter::onStatusInstanceChanged(body);
     }
     else if (typeWebhook == "quotaExceeded") {
-        #ifdef ON_QUOTA_EXCEEDED_EXISTS
-            error = UserAdapter::onQuotaExceeded(body);
-        #endif
+        error = UserAdapter::onQuotaExceeded(body);
     }
     else if (typeWebhook != "") {
-        #ifdef ON_UNKNOWN_TYPEWEBHOOK_EXISTS
-            error = UserAdapter::onUnknownTypeWebhook(body);
-        #endif
+        error = UserAdapter::onUnknownTypeWebhook(body);
     }
     return error;
 }

@@ -7,23 +7,30 @@ const std::map<std::string, std::string> Config::LoadServerConfig(const std::str
         {"Address", ":5000"},
         {"Pattern", "/"},
         {"WebhookToken", ""},
-        {"LoggingType", "console"},
+        {"LogToConsole", "true"},
+        {"LogToFile", "false"},
         {"LoggerFilename", "log.txt"}
     };
 
+    // In most cases, the app is running from parent's directory, not from build/bin.
+    // Because of that, prioritize to .config file placed in build/bin
+    // If no build/bin directory will found, get config file from . directory
     std::vector<std::string> directories = {
         "build/" + filename,
         "build/bin/" + filename,
         "bin/" + filename,
         filename,
         "./../" + filename,
+        "./../../" + filename,
     };
 
     std::string filenamePath;
+    std::string dirPath;
     bool found {false};
     for (const auto& p : directories) {
         if (std::filesystem::exists(p)) {
             filenamePath = p;
+            dirPath = p.substr(0, p.find_last_of("//"));
             found = true;
             break;
         }
@@ -55,20 +62,24 @@ const std::map<std::string, std::string> Config::LoadServerConfig(const std::str
         if (cfg.contains("WebhookToken")) {
             config["WebhookToken"] = cfg["WebhookToken"];
         }
-        if (cfg.contains("LoggingType")) {
-            config["LoggingType"] = cfg["LoggingType"];
-            greenapi::logCfgType = config["LoggingType"];
+        if (cfg.contains("LogToConsole")) {
+            config["LogToConsole"] = cfg["LogToConsole"] ? "true" : "false";
+            greenapi::logToConsole = cfg["LogToConsole"];
+        }
+        if (cfg.contains("LogToFile")) {
+            config["LogToFile"] = cfg["LogToFile"] ? "true" : "false";
+            greenapi::logToFile = cfg["LogToFile"];
         }
         if (cfg.contains("LoggerFilename")) {
             config["LoggerFilename"] = cfg["LoggerFilename"];
-            greenapi::logCfgFilename = config["LoggerFilename"];
+            greenapi::loggerFilename = dirPath + "\\" + config["LoggerFilename"];
+        }
+        if (!cfg.contains("LogToConsole") && !cfg.contains("LogToFile")) {
+            greenapi::logToConsole = true;
         }
     }
     f.close();
     
-    if (config["LoggingType"] != "console" && config["LoggingType"] != "logger") {
-        config["LoggingType"] = "console";
-    }
     if (config["WebhookToken"].rfind("Basic ", 0) == 0) {
         config["WebhookToken"] = config["WebhookToken"].substr(6);
     } else if (config["WebhookToken"].rfind("Bearer ", 0) == 0) {
@@ -82,11 +93,12 @@ nlohmann::json Config::OpenSchemas() {
     nlohmann::json schemas;
 
     std::vector<std::string> directories = {
-        "jsonSchema",
-        "./../jsonSchema",
         "build/jsonSchema",
         "build/bin/jsonSchema",
         "bin/jsonSchema"
+        "jsonSchema",
+        "./../jsonSchema",
+        "./../../jsonSchema" 
     };
 
     std::filesystem::path jsonSchemaDir;

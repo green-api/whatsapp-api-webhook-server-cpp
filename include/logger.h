@@ -9,8 +9,9 @@
 #include <regex>
 
 namespace greenapi {
-    extern std::string logCfgType;
-    extern std::string logCfgFilename;
+    extern bool logToFile;
+    extern bool logToConsole;
+    extern std::string loggerFilename;
     
     class Logger {
         public:

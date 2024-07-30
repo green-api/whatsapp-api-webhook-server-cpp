@@ -126,7 +126,7 @@ cmake --build build --config=Release
 Run this application:
 
 ```bash
-.\build\bin\whatsapp-api-webhook-server-cpp
+./build/bin/whatsapp-api-webhook-server-cpp
 ```
 
 Server exposes port from ```config.json``` configuration (by default: ```5000```). Detailed configuration description available [here](#running-the-app).

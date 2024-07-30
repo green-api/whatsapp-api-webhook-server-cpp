@@ -1,4 +1,4 @@
-#include "user_adapter.h"
+#include "user_adapter_example.h"
 
 // If your request hang up, please check your function is getting only existing fields in JSON.
 // Example:
@@ -256,7 +256,6 @@ bool UserAdapter::onIncomingMessageReceived(greenapi::Response& body) {
         std::string ButtonsLog;
         if (ButtonsMessage.contains("buttons") && ButtonsMessage["buttons"].is_array()) {
             bool firstTimeLog {true};
-            std::cout << "3\n";
             for (const auto& Button : ButtonsMessage["buttons"]) {
                 const auto ButtonId = Button["buttonId"];
                 const auto ButtonText = Button["buttonText"];
@@ -394,11 +393,11 @@ bool UserAdapter::onIncomingMessageReceived(greenapi::Response& body) {
 
         // Check values exists for contains(), because some fields may be optional
         const auto DownloadUrl      = FileMessageData["downloadUrl"];
-        const auto Caption          = FileMessageData.contains("caption")       ? FileMessageData["caption"] : nullptr;
-        const auto FileName         = FileMessageData.contains("fileName")      ? FileMessageData["fileName"] : nullptr;
-        const auto JpegThumbnail    = FileMessageData.contains("jpegThumbnail") ? FileMessageData["jpegThumbnail"] : nullptr;
+        const auto Caption          = FileMessageData["caption"];
+        const auto FileName         = FileMessageData["fileName"];
+        const auto JpegThumbnail    = FileMessageData["jpegThumbnail"];
         const auto IsAnimated       = FileMessageData.contains("isAnimated")    ? FileMessageData["isAnimated"] : nullptr;
-        const auto MimeType         = FileMessageData.contains("mimeType")      ? FileMessageData["mimeType"] : nullptr;
+        const auto MimeType         = FileMessageData["mimeType"];
         const auto IsForwarded      = FileMessageData.contains("isForwarded")   ? FileMessageData["isForwarded"] : nullptr;
         const auto ForwardingScore  = FileMessageData.contains("forwardingScore") ? FileMessageData["forwardingScore"] : nullptr;
 
@@ -407,11 +406,11 @@ bool UserAdapter::onIncomingMessageReceived(greenapi::Response& body) {
         std::string AnimatedStatus      = IsAnimated != nullptr         ? (IsAnimated ? "animated" : "not animated") : "not provided";
 
         greenapi::Logger::Log("Sticker message received: " 
-            + std::string("DownloadUrl: ")          + nlohmann::to_string(DownloadUrl)
-            + (Caption != nullptr ? ", Caption: "   + nlohmann::to_string(Caption) : "")
-            + (FileName != nullptr ? ", FileName: " + nlohmann::to_string(FileName) : "")
-            + (JpegThumbnail != nullptr ? ", JpegThumbnail: " + nlohmann::to_string(JpegThumbnail) : "")
-            + (MimeType != nullptr ? ", MimeType: " + nlohmann::to_string(MimeType) : "")
+            + std::string("DownloadUrl: ") + nlohmann::to_string(DownloadUrl)
+            + ", Caption: "         + nlohmann::to_string(Caption)
+            + ", FileName: "        + nlohmann::to_string(FileName)
+            + ", JpegThumbnail: "   + nlohmann::to_string(JpegThumbnail)
+            + ", MimeType: "        + nlohmann::to_string(MimeType)
             + ", IsAnimated: "      + AnimatedStatus
             + ", IsForwarded: "     + ForwardedStatus
             + ", ForwardingScore: " + ForwardingScoreStr

@@ -18,7 +18,7 @@
 - [Documentation in English](https://github.com/green-api/whatsapp-api-client-cpp/blob/master/README.md).
 
 
-`whatsapp-api-webhook-server-cpp` — вебхук сервер для интеграции с мессенджером WhatsApp messenger через API сервиса [green-api.com](https://green-api.com/). 
+`whatsapp-api-webhook-server-cpp` — вебхук сервер для интеграции с мессенджером WhatsApp Messenger через API сервиса [green-api.com](https://green-api.com/). 
 Для работы с сервером нужно получить регистрационный токен и ID аккаунта в [личном кабинете](https://console.green-api.com/). Есть бесплатный тариф аккаунта разработчика.
 
 - [whatsapp-api-webhook-server-cpp](#whatsapp-api-webhook-server-cpp)
@@ -44,17 +44,19 @@
 
 ## Получение Webhook Token
 
-Чтобы получить Webhook Token и иметь возможность отправлять запросы на этот сервер, необходимо авторизовать учетную запись WhatsApp в приложении для телефона. Чтобы авторизовать учетную запись, зайдите в свой [кабинет](https://console.green-api.com/) и отсканируйте QR-код с помощью приложения WhatsApp.
+Чтобы получить Webhook Token и иметь возможность отправлять запросы на этот сервер, необходимо авторизовать учетную запись WhatsApp в приложении для телефона. Чтобы авторизовать учетную запись, зайдите в [личный кабинет](https://console.green-api.com/) и отсканируйте QR-код с помощью приложения WhatsApp.
 
 ## Сборка приложения
 
 Это приложение использует C++ 17, CMake 3.5, поддерживает компиляторы Linux (GCC) и Windows (Visual Studio 2019/2022).
 
-Перед сборкой вам необходимо создать эти файлы (или скопировать готовые при их наличии):
+Перед сборкой вам необходимо создать эти файлы:
+
 - ```include/user_adapter.h```
+
 - ```source/user_adapter.cpp```
 
-При их отсутствии, переименуйте следующие файлы, удалив нижнее подчеркивание из названия: ```include/_user_adapter.h``` и ```source/_user_adapter.h```.
+Переименуйте следующие файлы, удалив нижнее подчеркивание из названия: ```include/_user_adapter.h``` и ```source/_user_adapter.h```.
 
 **Проект не будет собран, если это не будет сделано**.
 
@@ -63,7 +65,9 @@
 Для сборки приложения необходимо:
 
 - [git](https://gitforwindows.org/) - кроссплатформенная утилита, используемая в этом проекте для загрузки библиотек.
+
 - [CMake](https://cmake.org/download/) - кроссплатформенная утилита для автоматического создания ПО из исходного кода.
+
 - Компилятор [Microsoft Visual C++ (MSVC)](https://visualstudio.microsoft.com/ru/downloads/) для C++ приложений.
 
 ```cmake``` и ```git``` должны быть доступны в PATH.
@@ -84,6 +88,15 @@ build.bat
 cmake --build build --config=Release
 ```
 
+Исполняемый файл приложения находится в ```build/bin/```. 
+
+Запуск приложения:
+```bash
+start build\bin\whatsapp-api-webhook-server-cpp.exe
+```
+
+При исполнении программы создается сервер на порте из конфигурации ```config.json``` (по умолчанию 5000). Подробное описание конфигурации доступно [здесь](#запуск-приложения).
+
 ### Linux
 
 Для сборки приложения необходимы git, g++, cmake:
@@ -94,7 +107,7 @@ sudo apt-get install git g++ cmake
 
 ```cmake``` и ```git``` должны быть доступны в Bash.
 
-Сборка выполняется запуском скрипта ```build.sh```:
+Сделайте git clone для загрузки проекта и перейдите в директорию. Сборка скрипта выполняется запуском скрипта ```build.sh```:
 
 ```bash
 git clone --branch=master --depth=1 https://github.com/green-api/whatsapp-api-webhook-server-cpp
@@ -110,9 +123,20 @@ cd whatsapp-api-webhook-server-cpp
 cmake --build build --config=Release
 ```
 
+Исполняемый файл приложения находится в ```build/bin/```. 
+
+Запуск приложения:
+```bash
+.\build\bin\whatsapp-api-webhook-server-cpp
+```
+
+При исполнении программы создается сервер на порте из конфигурации ```config.json``` (по умолчанию 5000). Подробное описание конфигурации доступно [здесь](#запуск-приложения).
+
 ### Docker
 
-Для запуска сервера через Docker, вам понадобится Docker и Docker Compose.
+Для запуска сервера через Docker вам понадобится Docker и Docker Compose.
+
+Вы можете установить [Docker Desktop](https://www.docker.com/products/docker-desktop/) для всех платформ или установить [Docker Engine](https://docs.docker.com/engine/install/) для Linux.
 
 Сделайте git clone для загрузки проекта и перейдите в директорию:
 
@@ -121,11 +145,11 @@ git clone --branch=master --depth=1 https://github.com/green-api/whatsapp-api-we
 cd whatsapp-api-webhook-server-cpp
 ```
 
-Перед сборкой вам необходимо создать эти файлы (или скопировать готовые при их наличии):
+Перед сборкой вам необходимо создать эти файлы:
 - ```include/user_adapter.h```
 - ```source/user_adapter.cpp```
 
-При их отсутствии, переименуйте следующие файлы, удалив нижнее подчеркивание из названия: ```include/_user_adapter.h``` и ```source/_user_adapter.h```.
+Переименуйте следующие файлы, удалив нижнее подчеркивание из названия: ```include/_user_adapter.h``` и ```source/_user_adapter.h```.
 
 По умолчанию в образе открыт ```port 5000```. Если вы хотите изменить порт, тогда:
 - Поменяйте поле ```Address``` в ```config.json``` на требуемый вами порт;
@@ -137,16 +161,17 @@ cd whatsapp-api-webhook-server-cpp
 docker compose up --build whatsapp-api-webhook-server-cpp
 ```
 
-Сервер будет запущен автоматически после сборки проекта.
+Сервер будет запущен автоматически после сборки проекта. Подробное описание конфигурации доступно [здесь](#запуск-приложения).
 
 ## Запуск приложения
 
 Исполняемый файл приложения находится в ```build/bin/```.
 
 Сервером используется ```config.json``` для установки следующих значений:
-- Address (по умолчанию: ```:5000```). Сервер будет запущен на этом порту. Запросы должны отправляться на этот порт. [Настройка инстанса](https://green-api.com/en/docs/api/reception/technology-webhook-endpoint/#webhookUrl);
-- Pattern (по умолчанию: ```/```). Часть URI после порта: [Address][Pattern]. Все запросы, отправленные на неверный pattern, будут отклонены. По умолчанию сервер обрабатывает запросы по URI = ```localhost:5000/```. [Настройка инстанса](https://green-api.com/en/docs/api/reception/technology-webhook-endpoint/#webhookUrl);
-- WebhookToken (по умолчанию: **отсутствует**). Токен авторизации в заголовке приходящего запроса должен совпадать с токеном в вашем инстансе green-api (по умолчанию отсутствует). [Настройка инстанса](https://green-api.com/en/docs/api/reception/technology-webhook-endpoint/#webhookUrl);
+
+- Address (по умолчанию: ```:5000```). Сервер будет запущен на этом порту. Запросы должны отправляться на этот порт. [Настройка инстанса](https://green-api.com/docs/api/receiving/technology-webhook-endpoint/#webhookUrl);
+- Pattern (по умолчанию: ```/```). Часть URI после порта: [Address][Pattern]. Все запросы, отправленные на неверный pattern, будут отклонены. По умолчанию сервер обрабатывает запросы по URI = ```localhost:5000/```. [Настройка инстанса](https://green-api.com/docs/api/receiving/technology-webhook-endpoint/#webhookUrl);
+- WebhookToken (по умолчанию: **отсутствует**). Токен авторизации в заголовке приходящего запроса должен совпадать с токеном в вашем инстансе green-api (по умолчанию отсутствует). [Настройка инстанса](https://green-api.com/docs/api/receiving/technology-webhook-endpoint/#webhookUrl);
 - LoggingType (по умолчанию: ```console```). Доступные значения: ```logger```, ```console```. При ```logger``` все логи будут сохраняться в файл, при ```console``` все логи будут выводиться с помощью std::cout;
 - LoggerFilename (по умолчанию: ```log.txt```). Имя файла логгера.
 
@@ -156,51 +181,62 @@ docker compose up --build whatsapp-api-webhook-server-cpp
 
 ## User Adapter
 
+Для указания пользовательских функций при получении уведомления используются файлы ```user_adapter```. В данных файлах вам требуется указать функции обработки уведомлений (например: запись уведомления в базу, отправка запроса в другой микросервис). В качестве шаблона можно переименовать файлы ```_user_adapter```. Пример обработки всех типов уведомлений доступен в файлах ```user_adapter_example.h``` и ```user_adapter_example.cpp``` в папке ```examples```.
+
 Адаптер для пользователя находится в следующих файлах:
+
 - ```sources/user_adapter.cpp```
+
 - ```include/user_adapter.h```
 
 Если этих файлов не существует, создайте их, переименовав ```sources/_user_adapter.cpp``` и  ```include/_user_adapter.h```.
 
 Адаптер для пользователя содержит ваши обработчики вебхуков. Программа работает по следующему алгоритму:
+
 1. Запрос к серверу принимает класс ```webhook```;
-2. Класс ```webhook``` создает объект ```Response``` и передает тело запроса классу ```Validator```.
-3. После проверки, объект ```Response``` передается в обработчик ```User Adapter``` на основе ```webToken``` в теле запроса.
+
+2. Класс ```webhook``` создает объект ```Response``` и передает тело запроса классу ```Validator```;
+
+3. После проверки, объект ```Response``` передается в обработчик ```User Adapter``` на основе ```webToken``` в теле запроса.;
+
 4. Функция обработки в ```User Adapter``` возвращает ```true``` в случае ошибки или ```false```, если обработка произошла без ошибок. На основе этого значения, сервер вернет или 200 OK или 400 Bad Request.
+
 
 Структура объекта ```Response``` (response.h):
 
-```
-struct Response {
-```
--    ```bool error = true; ``` — error is true if incoming webhook failed to validate, false otherwise;
--    ```std::string typeWebhook = ""; — ``` webhookType taken from request body;
--    ```std::string bodyStr = ""; ``` — contains request body if error = false, otherwise contains validation error description;
--    ```nlohmann::json bodyJson = ""; — ``` body of incoming request;
-```
-};
-```
+``` struct Response { ```
 
-4. Функции в UserAdapter описываются как:
+-    ```bool error = true; ``` — равна true, если вебхук не прошел валидацию, иначе false;
+
+-    ```std::string typeWebhook = "";``` —  webhookType из тело запроса;
+
+-    ```std::string bodyStr = ""; ``` — содержит тело запроса, если error = false, иначе описание ошибки валидации;
+
+-    ```nlohmann::json bodyJson = "";``` —  тело пришедшего запроса.
+
+``` };```
+
+1. Функции в UserAdapter описываются как:
 
 ```
 #define ON_WEBHOOK_TYPE_EXISTS
 static bool onWebhookType(greenapi::Response& body);
 ```
 
-#define используется классом ```webhook```. Вы можете безопасно удалить неиспользуемые вами функции в UserAdapter.
+```#define``` используется классом ```webhook```. Вы можете безопасно удалить неиспользуемые вами функции в UserAdapter.
 
-5. Пример функции UserAdapter:
+
+2. Пример функции UserAdapter:
 
 В данном примере, обработчик будет вызван вебхуком с типом ```IncomingMessageReceived```. С помощью структуры ```Response```, описанной выше, вы можете проверить результат валидации запроса (```body.error```), обратиться к json структуре вебхука (```body.bodyJson```) или получить доступ к телу запроса (```body.bodyStr```).
 
 ```
 bool UserAdapter::onIncomingMessageReceived(greenapi::Response& body) {
-    // Every request contains typeWebhook. Requests are rejected, if no typeWebhook given.
+    // Каждый запрос содержит typeWebhook. Если typeWebhook нет в запросе, запрос отклоняется сервером.
     const auto typeWebhook = body.bodyJson["typeWebhook"];
 
-    // If you encountered errors while hanlding, you should return true.
-    // It will change response status to 400 Bad Request with immediate return of the HTTP request result
+    // Если вам нужно вернуть ошибку в процессе обработки запроса, верните true из этой функции.
+    // Это изменит статус запроса на 400 Bad Request с немедленным возвратом результата HTTP запроса.
     // 
     // if (<error>) {
     //    return true;
@@ -208,20 +244,20 @@ bool UserAdapter::onIncomingMessageReceived(greenapi::Response& body) {
 
     greenapi::Logger::Log("Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr, "info");
 
-    // Write your handler here:
+    // Опишите ваш обработчик здесь:
 
-    // Return false if no error, after this 200 OK response will be returned
+    // Если нет ошибок, верните false. После этого сервер вернет статус запроса 200 OK
     return false;
 }
 ```
 
 ## Примеры
 
-Примерны доступны в [examples.cpp](./examples/example.cpp).
+Примерны доступны в [examples.cpp](./examples/user_adapter_example.cpp).
 
 ## Документация по методам вебхуков
 
-[https://green-api.com/docs/api/](https://green-api.com/en/docs/api/receiving/notifications-format/).
+[https://green-api.com/docs/api/](https://green-api.com/docs/api/receiving/notifications-format/).
 
 ## Валидация JSON
 

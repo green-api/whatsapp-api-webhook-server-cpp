@@ -56,7 +56,7 @@
 
 Если у вас нет требуемого файла, создайте его путем удаления нижнего подчеркивания из названия  ```source/_user_adapter.cpp`` файла.
 
-Мы будем обновлять ```include/user_adapter.h``` и ```source/_user_adapter.cpp``` файлы по мере выпуска новых вебхуков. Если вы столкнулись с ошибкой сборки, где написано о том, что компилятор не смог найти требуемые функции из ```user_adapter```, то в этом случае вам нужно добавить новые функции из ```source/_user_adapter.cpp``` в ваш ```source/user_adapter.cpp```.
+Мы будем обновлять ```include/user_adapter.h``` и ```source/_user_adapter.cpp``` файлы по мере выпуска новых вебхуков. Если вы столкнулись с ошибкой сборки, где написано о том, что компилятор не смог найти требуемые функции из ```user_adapter```, то в этом случае вам необходимо добавить новые функции из ```source/_user_adapter.cpp``` в ваш ```source/user_adapter.cpp```.
 
 **Проект не будет собран, если это не будет сделано**.
 
@@ -151,7 +151,7 @@ cd whatsapp-api-webhook-server-cpp
 
 Если у вас нет требуемого файла, создайте его путем удаления нижнего подчеркивания из названия  ```source/_user_adapter.cpp`` файла.
 
-Мы будем обновлять ```include/user_adapter.h``` и ```source/_user_adapter.cpp``` файлы по мере выпуска новых вебхуков. Если вы столкнулись с ошибкой сборки, где написано о том, что компилятор не смог найти требуемые функции из ```user_adapter```, то в этом случае вам нужно добавить новые функции из ```source/_user_adapter.cpp``` в ваш ```source/user_adapter.cpp```
+Мы будем обновлять ```include/user_adapter.h``` и ```source/_user_adapter.cpp``` файлы по мере выпуска новых вебхуков. Если вы столкнулись с ошибкой сборки, где написано о том, что компилятор не смог найти требуемые функции из ```user_adapter```, то в этом случае вам необходимо добавить новые функции из ```source/_user_adapter.cpp``` в ваш ```source/user_adapter.cpp```
 
 По умолчанию в образе открыт ```port 5000```. Если вы хотите изменить порт, тогда:
 
@@ -175,7 +175,7 @@ docker compose up --build whatsapp-api-webhook-server-cpp
 
 - Address (по умолчанию: ```:5000```). Сервер будет запущен на этом порту. Запросы должны отправляться на этот порт. [Настройка инстанса](https://green-api.com/docs/api/receiving/technology-webhook-endpoint/#webhookUrl);
 
-- Pattern (по умолчанию: ```/```). Часть URI после порта: [Address][Pattern]. Все запросы, отправленные на неверный pattern, будут отклонены. По умолчанию сервер обрабатывает запросы по URI = ```localhost:5000/```. [Настройка инстанса](https://green-api.com/docs/api/receiving/technology-webhook-endpoint/#webhookUrl);
+- Pattern (по умолчанию: ```/```). Часть URI после порта: "Address""Pattern". Все запросы, отправленные на неверный pattern, будут отклонены. По умолчанию сервер обрабатывает запросы по URI = ```localhost:5000/```. [Настройка инстанса](https://green-api.com/docs/api/receiving/technology-webhook-endpoint/#webhookUrl);
 
 - WebhookToken (по умолчанию: **отсутствует**). Токен авторизации в заголовке приходящего запроса должен совпадать с токеном в вашем инстансе green-api (по умолчанию отсутствует). [Настройка инстанса](https://green-api.com/docs/api/receiving/technology-webhook-endpoint/#webhookUrl);
 
@@ -199,7 +199,7 @@ docker compose up --build whatsapp-api-webhook-server-cpp
 
 Если у вас нет требуемого файла, создайте его путем удаления нижнего подчеркивания из названия  ```source/_user_adapter.cpp`` файла.
 
-Мы будем обновлять ```include/user_adapter.h``` и ```source/_user_adapter.cpp``` файлы по мере выпуска новых вебхуков. Если вы столкнулись с ошибкой сборки, где написано о том, что компилятор не смог найти требуемые функции из ```user_adapter```, то в этом случае вам нужно добавить новые функции из ```source/_user_adapter.cpp``` в ваш ```source/user_adapter.cpp```
+Мы будем обновлять ```include/user_adapter.h``` и ```source/_user_adapter.cpp``` файлы по мере выпуска новых вебхуков. Если вы столкнулись с ошибкой сборки, где написано о том, что компилятор не смог найти требуемые функции из ```user_adapter```, то в этом случае вам необходимо добавить новые функции из ```source/_user_adapter.cpp``` в ваш ```source/user_adapter.cpp```.
 
 Адаптер для пользователя содержит ваши обработчики вебхуков. Программа работает по следующему алгоритму:
 
@@ -207,7 +207,7 @@ docker compose up --build whatsapp-api-webhook-server-cpp
 
 2. Класс ```webhook``` создает объект ```Response``` и передает тело запроса классу ```Validator```;
 
-3. После проверки, объект ```Response``` передается в обработчик ```User Adapter``` на основе ```webToken``` в теле запроса.;
+3. После проверки, объект ```Response``` передается в обработчик ```User Adapter``` на основе ```webToken``` в теле запроса;
 
 4. Функция обработки в ```User Adapter``` возвращает ```true``` в случае ошибки или ```false```, если обработка произошла без ошибок. На основе этого значения, сервер вернет или 200 OK или 400 Bad Request.
 
@@ -228,7 +228,7 @@ docker compose up --build whatsapp-api-webhook-server-cpp
 
 1. Функции в UserAdapter описываются как:
 
-```
+```cpp
 #define ON_WEBHOOK_TYPE_EXISTS
 static bool onWebhookType(greenapi::Response& body);
 ```
@@ -240,7 +240,7 @@ static bool onWebhookType(greenapi::Response& body);
 
 В данном примере, обработчик будет вызван вебхуком с типом ```IncomingMessageReceived```. С помощью структуры ```Response```, описанной выше, вы можете проверить результат валидации запроса (```body.error```), обратиться к json структуре вебхука (```body.bodyJson```) или получить доступ к телу запроса (```body.bodyStr```).
 
-```
+```cpp
 bool UserAdapter::onIncomingMessageReceived(greenapi::Response& body) {
     // Каждый запрос содержит typeWebhook. Если typeWebhook нет в запросе, запрос отклоняется сервером.
     const auto typeWebhook = body.bodyJson["typeWebhook"];
@@ -275,7 +275,7 @@ JSON схемы для проверки вебхуков расположены 
 
 JSON схемы имеют следующую структуру:
 
-```
+```json
 {
   "$id": "schemas",
   "$schema": "https://json-schema.org/draft/2020-12/schema",

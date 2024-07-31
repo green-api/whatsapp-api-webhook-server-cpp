@@ -175,7 +175,7 @@ This project use ```config.json``` to set these variables:
 
 - Address (default: ```:5000```). Server will be launched on this port. Requests should be sent to this port. [Instance setup](https://green-api.com/en/docs/api/receiving/technology-webhook-endpoint/#webhookUrl);
 
-- Pattern (default: ```/```). Part of URI after port: <Address><Pattern>. All requests sent to wrong Pattern will be rejected. By default server will handle requests on URI = localhost:5000/. [Instance setup](https://green-api.com/en/docs/api/receiving/technology-webhook-endpoint/#webhookUrl);
+- Pattern (default: ```/```). Part of URI after port: "Address""Pattern". All requests sent to wrong Pattern will be rejected. By default server will handle requests on URI = localhost:5000/. [Instance setup](https://green-api.com/en/docs/api/receiving/technology-webhook-endpoint/#webhookUrl);
 
 - WebhookToken (default: **none**). Authorization token, must be equal to a token declared in your green-api instance (none dy default). [Instance setup](https://green-api.com/en/docs/api/receiving/technology-webhook-endpoint/#webhookUrl);
 
@@ -205,9 +205,9 @@ User Adapter contains your handlers for incoming webhooks. It works according to
 
 1. Request to the server is received by ```webhook``` class;
 
-2. ```webhook``` class creates ```Response``` object and transmits request body to the ```validator``` class.
+2. ```webhook``` class creates ```Response``` object and transmits request body to the ```validator``` class;
 
-3. After validation, ```Response``` object transmits into ```UserAdapter``` handler, based on request's body ```webToken```.
+3. After validation, ```Response``` object transmits into ```UserAdapter``` handler, based on request's body ```webToken```;
 
 4. ```User Adapter``` function returns ```true``` if error or ```false``` if no error. Based on this value, server will return 200 OK or 400 Bad Request status.
 
@@ -226,7 +226,7 @@ The structure of ```Response``` object (response.h):
 ``` }; ```
 
 1. UserAdapter function defines as:
-```
+```cpp
 #define ON_WEBHOOK_TYPE_EXISTS
 static bool onWebhookType(greenapi::Response& body);
 ```
@@ -235,7 +235,7 @@ A ```#define``` is used by ```webhook``` class. You could safely remove unnesses
 
 In this example, handler will be called by webhook with type ```IncomingMessageReceived```. Using the structure ```Response``` above, you could check for validate of request (```body.error```), work with webhook json structure (```body.bodyJson```) or get access to webhook raw body (```body.bodyStr```).
 
-```
+```cpp
 bool UserAdapter::onIncomingMessageReceived(greenapi::Response& body) {
     // Every request contains typeWebhook. Requests are rejected, if no typeWebhook given.
     const auto typeWebhook = body.bodyJson["typeWebhook"];
@@ -266,7 +266,7 @@ JSON schemas for webhooks validation are placed in ```jsonSchema``` directory an
 
 JSON schemas have this structure:
 
-```
+```json
 {
   "$id": "schemas",
   "$schema": "https://json-schema.org/draft/2020-12/schema",

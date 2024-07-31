@@ -50,13 +50,13 @@ To receive a Webhook Token and be able to send requests into this server, the Wh
 
 This app uses C++ 17, CMake 3.5, supports Linux (GCC) and Windows (Visual Studio 2019/2022) compilers.
 
-Before building you should create these files (or copy existing ones if you have them)::
-
-- ```include/user_adapter.h```
+Before building you should create this file (or copy existing one if you have it):
 
 - ```source/user_adapter.cpp```
 
-If you don't have required files, create them by renaming with removing underscore from ```include/_user_adapter.h``` and ```source/_user_adapter.h``` files. 
+If you don't have required file, create it by renaming with removing underscore from ```source/_user_adapter.cpp``` file.
+
+We will update ```include/user_adapter.h``` and ```source/_user_adapter.cpp``` files as new webhooks are released. If you encountered build error, which tells compiler could not find required functions from ```user_adapter```, please add new functions from ```source/_user_adapter.cpp``` to yours ```source/user_adapter.cpp```.
 
 **This project will not build if you won't do it**.
 
@@ -81,7 +81,7 @@ cd whatsapp-api-webhook-server-cpp
 build.bat
 ```
 
-Application is built at Release config by default. Config file ```config.json``` and directory ```jsonSchema``` are copied to ```build\bin``` directory. The application prioritize ```build\bin``` files over ```.``` directory.
+Application is built at Release config by default. Config file ```config.json``` and directory ```jsonSchema``` are copied to ```build\bin``` directory. The application prioritize ```build\bin``` files over project's directory.
 
 After successful build you can build it using ```build.bat``` or 
 
@@ -115,7 +115,7 @@ cd whatsapp-api-webhook-server-cpp
 .\build.sh
 ```
 
-Application is built at Release config by default. Config file ```config.json``` and directory ```jsonSchema``` are copied to ```build/bin``` directory. The application will prioritize ```build/bin``` files over ```.``` directory.
+Application is built at Release config by default. Config file ```config.json``` and directory ```jsonSchema``` are copied to ```build/bin``` directory. The application will prioritize ```build/bin``` files over project's directory.
 
 After successful build you can build it using ```.\build.sh``` or 
 
@@ -144,13 +144,13 @@ git clone --branch=master --depth=1 https://github.com/green-api/whatsapp-api-we
 cd whatsapp-api-webhook-server-cpp
 ```
 
-Before running Docker you should create these files:
-
-- ```include/user_adapter.h```
+Before running Docker you should create this file (or copy existing one if you have it):
 
 - ```source/user_adapter.cpp```
 
-If you don't have required filss, create them by renaming with removing underscore from ```include/_user_adapter.h``` and ```source/_user_adapter.h``` files.
+If you don't have required file, create it by renaming with removing underscore from ```source/_user_adapter.cpp``` file.
+
+We will update ```include/user_adapter.h``` and ```source/_user_adapter.cpp``` files as new webhooks are released. If you encountered build error, which tells compiler could not find required functions from ```user_adapter```, please add new functions from ```source/_user_adapter.cpp``` to yours ```source/user_adapter.cpp```.
 
 By default, ```port 5000``` is exposed. If you would like to change it, you need:
 
@@ -191,15 +191,15 @@ You can use [Postman collection](https://green-api.com/en/docs/postman-collectio
 
 ## User Adapter
 
-For specifing user-defined functions when a notification received use ```user_adapter``` files. In these files you should define notifications handlers (for example: write notification into database, send request to other microservice). Template files ```_user_adapter``` can be used by it's renaming. Handler examples for all notification type are available in files ```user_adapter_example.h``` and ```user_adapter_example.cpp``` in directory ```examples```.
+For specifing user-defined functions when a notification received use ```user_adapter``` files. In these files you should define notifications handlers (for example: write notification into database, send request to other microservice). Template file ```source/_user_adapter.cpp``` can be used by it's renaming. Handler examples for all notification type are available in file ```user_adapter_example.cpp``` in directory ```examples```.
 
 The user adapter located in:
 
 - ```sources/user_adapter.cpp```
 
-- ```include/user_adapter.h```
+If you don't have required file, create it by renaming with removing underscore from ```source/_user_adapter.cpp``` file.
 
-If these files does not exist, create them by renaming ```sources/_user_adapter.cpp``` and  ```include/_user_adapter.h```.
+We will update ```include/user_adapter.h``` and ```source/_user_adapter.cpp``` files as new webhooks are released. If you encountered build error, which tells compiler could not find required functions from ```user_adapter```, please add new functions from ```source/_user_adapter.cpp``` to yours ```source/user_adapter.cpp```.
 
 User Adapter contains your handlers for incoming webhooks. It works according to the following algorithm:
 

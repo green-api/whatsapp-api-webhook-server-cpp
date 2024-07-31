@@ -2,30 +2,23 @@
 mkdir build
 
 set "user_adapter_cpp=source\user_adapter.cpp"
-set "user_adapter_h=include\user_adapter.h"
 set "user_adapter_template_cpp=source\_user_adapter.cpp"
-set "user_adapter_template_h=include\_user_adapter.h"
 
 if not exist "%user_adapter_cpp%" (
-    goto wrongUserAdapter
-)
-
-if not exist "%user_adapter_h%" (
     goto wrongUserAdapter
 )
 
 goto afterwrongUserAdapter
 
 :wrongUserAdapter
-    echo Could not find "%user_adapter_cpp%" and "%user_adapter_h%" files. They are required for your functions.
-    echo If you already have these files, please copy them to "%user_adapter_cpp%" and "%user_adapter_h%".
-    echo If you don't have these files, please use a template, copy:
+    echo Could not find "%user_adapter_cpp%" file. It is required for your functions.
+    echo If you already have this file, please copy it to "%user_adapter_cpp%".
+    echo If you don't have this file, please use a template, copy:
     echo - "%user_adapter_template_cpp%" to "%user_adapter_cpp%"
-    echo - "%user_adapter_template_h%" to "%user_adapter_h%"
     exit /b
 
 :afterwrongUserAdapter
-if exist "%user_adapter_cpp%" if exist "%user_adapter_h%" (
+if exist "%user_adapter_cpp%" (
     echo User Adapter found.
 )
 

@@ -1,3 +1,21 @@
+#!/bin/bash
+
+user_adapter_cpp="source/user_adapter.cpp"
+user_adapter_template_cpp="source/_user_adapter.cpp"
+
+if [ ! -f "$user_adapter_cpp" ]; then
+    echo "Could not find '$user_adapter_cpp' file. It is required for your functions."
+    echo "If you already have this file, please copy them to '$user_adapter_cpp'"
+    echo "If you dont have this file, please use a template, copy:"
+    echo "- '$user_adapter_template_cpp' to '$user_adapter_cpp'"
+    exit 1
+fi
+
+if [ -f "$user_adapter_cpp" ]; then
+    echo "User Adapter found."
+fi
+
+
 mkdir build
 
 git clone --branch=main --depth=1 https://github.com/pocoproject/poco lib/poco

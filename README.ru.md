@@ -181,7 +181,7 @@ docker compose up --build whatsapp-api-webhook-server-cpp
 
 - LogToFile (по умолчанию: ```false```). Данный флаг отвечает за создание файла и запись логов в него. Доступные значения: true, false.
 
-- LogToConsole (по умолчанию: ```true```). Данный флаг отвечает за запись логов в консоль. Доступные значения: true, false.
+- LogToConsole (по умолчанию: ```false```). Данный флаг отвечает за запись логов в консоль. Доступные значения: true, false.
 
 - LoggerFilename (по умолчанию: ```log.txt```). Имя файла логгера.
 
@@ -214,27 +214,20 @@ docker compose up --build whatsapp-api-webhook-server-cpp
 
 Структура объекта ```Response``` (response.h):
 
-``` struct Response { ```
-
--    ```bool error = true; ``` — равна true, если вебхук не прошел валидацию, иначе false;
-
--    ```std::string typeWebhook = "";``` —  webhookType из тело запроса;
-
--    ```std::string bodyStr = ""; ``` — содержит тело запроса, если error = false, иначе описание ошибки валидации;
-
--    ```nlohmann::json bodyJson = "";``` —  тело пришедшего запроса.
-
-``` };```
+```cpp
+struct Response {
+    bool error = true; // true, если вебхук не прошел валидацию
+    std::string typeWebhook = ""; // webhookType из тела запроса
+    std::string bodyStr = "";  // содержит тело запроса, если error = false, иначе описание ошибки валидации
+    nlohmann::json bodyJson = ""; //  тело пришедшего запроса
+}
+```
 
 1. Функции в UserAdapter описываются как:
 
 ```cpp
-#define ON_WEBHOOK_TYPE_EXISTS
 static bool onWebhookType(greenapi::Response& body);
 ```
-
-```#define``` используется классом ```webhook```. Вы можете безопасно удалить неиспользуемые вами функции в UserAdapter.
-
 
 2. Пример функции UserAdapter:
 

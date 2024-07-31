@@ -181,7 +181,7 @@ This project use ```config.json``` to set these variables:
 
 - LogToFile (default: ```false```). Defines the creation logger of a file and writing logs to it by program. Available values: true, false.
 
-- LogToConsole (default: ```true```). Defines writing logs into console by program. Available values: true, false.
+- LogToConsole (default: ```false```). Defines writing logs into console by program. Available values: true, false.
 
 - LoggerFilename (default: ```log.txt```). Filename for logger's file.
 
@@ -213,24 +213,19 @@ User Adapter contains your handlers for incoming webhooks. It works according to
 
 The structure of ```Response``` object (response.h):
 
-``` struct Response { ```
-
--    ```bool error = true; ``` — error is true if incoming webhook failed to validate, false otherwise;
-
--    ```std::string typeWebhook = ""; ``` — webhookType taken from request body;
-
--    ```std::string bodyStr = ""; ``` — contains request body if error = false, otherwise contains validation error description;
-
--    ```nlohmann::json bodyJson = ""; ``` — body of incoming request;
-
-``` }; ```
+```cpp
+struct Response {
+    bool error = true; // true if incoming webhook failed to validate
+    std::string typeWebhook = ""; // webhookType taken from request body
+    std::string bodyStr = "";  // contains request body if error = false, otherwise contains validation error description
+    nlohmann::json bodyJson = ""; //  body of incoming request
+}
+```
 
 1. UserAdapter function defines as:
 ```cpp
-#define ON_WEBHOOK_TYPE_EXISTS
 static bool onWebhookType(greenapi::Response& body);
 ```
-A ```#define``` is used by ```webhook``` class. You could safely remove unnessesary for you UserAdapter functions.
 2. UserAdapter function example:
 
 In this example, handler will be called by webhook with type ```IncomingMessageReceived```. Using the structure ```Response``` above, you could check for validate of request (```body.error```), work with webhook json structure (```body.bodyJson```) or get access to webhook raw body (```body.bodyStr```).

@@ -26,7 +26,9 @@ void greenapi::Logger::Log(const std::string &message, const std::string &level)
         logfile.close();
     }
 
-    if (greenapi::logToConsole) {
+    if (level == "error") {
+        std::cout << messageLog << std::endl;
+    } else if (greenapi::logToConsole) {
         std::cout << messageLog << std::endl;
     }
 }

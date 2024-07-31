@@ -52,3 +52,4 @@ cd ..
 if not exist "build\bin" mkdir "build\bin"
 xcopy /e /i /y "jsonSchema" "build\bin\jsonSchema"
 copy /y "config.json" "build\bin"
+del /s build\bin\poco-arc.exe

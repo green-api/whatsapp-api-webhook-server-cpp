@@ -32,11 +32,6 @@ void Validator::Validate(Response &r, nlohmann::json &schemas) {
 
     const std::string cleantedTypeWebhook = std::regex_replace(nlohmann::to_string(TypeWebhook), std::regex("\\\""), "");
     r.error = Validator::ProccessValidate(r, cleantedTypeWebhook, schemas);
-    if (r.error) {
-        std::ostringstream buffer;
-        buffer << TypeWebhook;
-        Logger::Log("Failed check: " + buffer.str(), "error");
-    }
 }
 
 //  Compare given json object with given schema, returns error, returns [true] if error, [false] if no error

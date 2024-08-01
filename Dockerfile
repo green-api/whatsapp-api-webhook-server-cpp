@@ -7,7 +7,14 @@ RUN apt-get update && \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-COPY . /app/
+COPY ./examples/ /app/examples
+COPY ./include/ /app/include
+COPY ./jsonSchema/ /app/jsonSchema
+COPY ./source/ /app/source
+COPY ./build.sh /app/
+COPY ./CMakeLists.txt /app/
+COPY ./config.json /app/
+
 
 WORKDIR /app
 

@@ -68,7 +68,7 @@ void RequestHandler::handleRequest(Poco::Net::HTTPServerRequest &req, Poco::Net:
             Logger::Log("JSON is empty or invalid, aborting. This may be caused by trying to load URI with browser.", "error");
             resp.setStatus(Poco::Net::HTTPResponse::HTTP_BAD_REQUEST);
             std::ostream& out = resp.send();
-            out << "This is a WhatsApp API Webhook server developed by Green-API.\nIf you want to make a request to this server, please view webhooks documentation: https://green-api.com/en/docs/api/receiving/notifications-format/\n\nGREEN API (c) 2015 - 2024";
+            out << "This is a WhatsApp API Webhook server developed by Green-API.\nIf you want to make a request to this server, please view webhooks documentation: https://green-api.com/en/docs/api/receiving/notifications-format/\n\nGREEN API (c) 2015 - 2024\n";
             out.flush();
             return;
         }

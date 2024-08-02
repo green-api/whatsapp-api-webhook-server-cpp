@@ -53,7 +53,6 @@ bool UserAdapter::onOutgoingMessageReceived(greenapi::Response& body) {
 
     // You can get raw request body using Response.bodyStr (string):
     std::cout << "Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr << "\n";
-    std::cout << "Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr << "\n";
 
     // Write your handler here:
     

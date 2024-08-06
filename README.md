@@ -1,7 +1,5 @@
 # whatsapp-api-webhook-server-cpp
 
-![](https://img.shields.io/badge/license-CC%20BY--ND%204.0-green)
-
 ## Support links
 
 [![Support](https://img.shields.io/badge/support@green--api.com-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:support@green-api.com)

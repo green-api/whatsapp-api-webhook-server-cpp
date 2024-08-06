@@ -25,7 +25,7 @@ bool UserAdapter::onIncomingMessageReceived(greenapi::Response& body) {
     //}
 
     // You can get raw request body using Response.bodyStr (string):
-    std::cout << "Received webhook: " << nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr << "\n";
+    std::cout << "Received webhook: " << nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr << std::endl;
 
 
     // Write your handler here:
@@ -52,7 +52,7 @@ bool UserAdapter::onOutgoingMessageReceived(greenapi::Response& body) {
     //}
 
     // You can get raw request body using Response.bodyStr (string):
-    std::cout << "Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr << "\n";
+    std::cout << "Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr << std::endl;
 
     // Write your handler here:
     
@@ -78,7 +78,7 @@ bool UserAdapter::onOutgoingAPIMessageReceived(greenapi::Response& body) {
     //}
 
     // You can get raw request body using Response.bodyStr (string):
-    std::cout << "Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr << "\n";
+    std::cout << "Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr << std::endl;
 
     // Write your handler here:
     
@@ -104,7 +104,7 @@ bool UserAdapter::onOutgoingMessageStatus(greenapi::Response& body) {
     //}
 
     // You can get raw request body using Response.bodyStr (string):
-    std::cout << "Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr << "\n";
+    std::cout << "Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr << std::endl;
 
     // Write your handler here:
     
@@ -130,7 +130,7 @@ bool UserAdapter::onStateInstanceChanged(greenapi::Response& body) {
     //}
 
     // You can get raw request body using Response.bodyStr (string):
-    std::cout << "Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr << "\n";
+    std::cout << "Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr << std::endl;
 
     // Write your handler here:
     
@@ -156,7 +156,7 @@ bool UserAdapter::onDeviceInfo(greenapi::Response& body) {
     //}
 
     // You can get raw request body using Response.bodyStr (string):
-    std::cout << "Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr << "\n";
+    std::cout << "Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr << std::endl;
 
     // Write your handler here:
     
@@ -182,7 +182,7 @@ bool UserAdapter::onIncomingCall(greenapi::Response& body) {
     //}
 
     // You can get raw request body using Response.bodyStr (string):
-    std::cout << "Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr << "\n";
+    std::cout << "Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr << std::endl;
 
     // Write your handler here:
     
@@ -208,7 +208,7 @@ bool UserAdapter::onStatusInstanceChanged(greenapi::Response& body) {
     //}
 
     // You can get raw request body using Response.bodyStr (string):
-    std::cout << "Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr << "\n";
+    std::cout << "Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr << std::endl;
 
     // Write your handler here:
     
@@ -235,7 +235,7 @@ bool UserAdapter::onQuotaExceeded(greenapi::Response& body) {
     //}
 
     // You can get raw request body using Response.bodyStr (string):
-    std::cout << "Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr << "\n";
+    std::cout << "Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr << std::endl;
 
     // Write your handler here:
 
@@ -280,7 +280,7 @@ bool UserAdapter::onUnknownTypeWebhook(greenapi::Response& body) {
     //}
 
     // No error given to request, if it's unknown
-    std::cout << "Received unknown webhook" + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr << "\n";
+    std::cout << "Received unknown webhook" + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr << std::endl;
     
     // Write your handler here:
 

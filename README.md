@@ -154,12 +154,12 @@ By default, ```port 5000``` is exposed. If you would like to change it, you need
 
 - Change ```Address``` field in ```config.json``` to your desired port;
 
-- Change ```ports``` field in ```compose.yaml``` to your desired port;
+- Change ```ports``` field in ```docker-compose.yaml``` to your desired port;
 
-Run Docker image with Docker Compose:
+Run Docker image with Docker Compose. Use flag ```--build```, if you are running this container first time or project files have been changed:
 
 ```bash
-docker compose up --build whatsapp-api-webhook-server-cpp
+docker compose up --build
 ```
 
 Server will be started after building automatically. Detailed configuration description available [here](#running-the-app).

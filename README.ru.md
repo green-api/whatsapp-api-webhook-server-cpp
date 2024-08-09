@@ -154,12 +154,12 @@ cd whatsapp-api-webhook-server-cpp
 
 - Поменяйте поле ```Address``` в ```config.json``` на требуемый вами порт;
 
-- Поменяйте поле ```ports``` в ```compose.yaml``` на требуемый вами порт;
+- Поменяйте поле ```ports``` в ```docker-compose.yaml``` на требуемый вами порт;
 
-Запустите Docker образ с помощью Docker Compose:
+Запустите Docker образ с помощью Docker Compose. Используйте флаг ```--build```, если вы запускаете контейнер в первый раз или вы изменили файлы в проекте:
 
 ```bash
-docker compose up --build whatsapp-api-webhook-server-cpp
+docker compose up --build
 ```
 
 Сервер будет запущен автоматически после сборки проекта. Подробное описание конфигурации доступно [здесь](#запуск-приложения).

@@ -446,6 +446,34 @@
             "listResponseMessage": {
               "$schema": "https://json-schema.org/draft/2020-12/schema",
               "type": "object"
+            },
+            "editedMessageData": {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object",
+              "properties": {
+                    "textMessage": {
+                      "type": "string"
+                    },
+                    "stanzaId": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["textMessage", "stanzaId"],
+                  "additionalProperties": true
+            },
+            "deletedMessageData": {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object",
+              "properties": {
+                    "stanzaId": {
+                      "type": "string"
+                    },
+                    "typeMessage": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["stanzaId"],
+                  "additionalProperties": true
             }
           },
 
@@ -470,6 +498,8 @@
             { "required": ["templateMessage"] },
             { "required": ["buttonsResponseMessage"] },
             { "required": ["templateButtonReplyMessage"] },
+            { "required": ["listResponseMessage"] },
+            { "required": ["editedMessageData"] },
             { "required": ["listResponseMessage"] }
           ],
           "additionalProperties": true

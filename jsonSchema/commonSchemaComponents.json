@@ -467,9 +467,6 @@
               "properties": {
                     "stanzaId": {
                       "type": "string"
-                    },
-                    "typeMessage": {
-                      "type": "string"
                     }
                   },
                   "required": ["stanzaId"],
@@ -498,7 +495,7 @@
             { "required": ["templateMessage"] },
             { "required": ["buttonsResponseMessage"] },
             { "required": ["templateButtonReplyMessage"] },
-            { "required": ["listResponseMessage"] },
+            { "required": ["deletedMessageData"] },
             { "required": ["editedMessageData"] },
             { "required": ["listResponseMessage"] }
           ],

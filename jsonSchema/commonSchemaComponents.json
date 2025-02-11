@@ -467,6 +467,9 @@
               "properties": {
                     "stanzaId": {
                       "type": "string"
+                    },
+                    "typeMessage": {
+                      "type": "string"
                     }
                   },
                   "required": ["stanzaId"],

@@ -77,13 +77,21 @@ class UserAdapter {
         #define ON_STATUS_INSTANCE_CHANGED_EXISTS
         static bool onStatusInstanceChanged(greenapi::Response& body);
 
-        // Incoming webhook quotaExceeded contains data about exceeding chat limitations on the Developer plan. 
+        // Incoming webhook quotaExceeded contains data about exceeding chat limitations on the Developer plan.
         // Parameters: [typeWebhook: string, instanceData: object, timestamp: integer, quotaData: object]
         // View documentation here:
-        // https://green-api.com/en/docs/api/receiving/notifications-format/StatusInstanceChanged/
+        // https://green-api.com/en/docs/api/receiving/notifications-format/QuotaExceeded/
         // Returns: [true], if error; [false], if no error
         #define ON_QUOTA_EXCEEDED_EXISTS
         static bool onQuotaExceeded(greenapi::Response& body);
+
+        // Incoming block/unblock notification. Parameters:
+        // [typeWebhook: string, instanceData: object, timestamp: integer, chatId: string, chatState: string]
+        // View documentation here:
+        // https://green-api.com/en/docs/api/receiving/notifications-format/IncomingBlock/
+        // Returns: [true], if error; [false], if no error
+        #define ON_INCOMING_BLOCK_EXISTS
+        static bool onIncomingBlock(greenapi::Response& body);
 
         // Handle error here: output error description and make other error handling
         // Returns: [true], if error; [false], if no error

@@ -179,6 +179,9 @@ bool RequestHandler::handleTypeWebhook(const std::string &typeWebhook, Response&
     else if (typeWebhook == "quotaExceeded") {
         error = UserAdapter::onQuotaExceeded(body);
     }
+    else if (typeWebhook == "incomingBlock") {
+        error = UserAdapter::onIncomingBlock(body);
+    }
     else if (typeWebhook != "") {
         error = UserAdapter::onUnknownTypeWebhook(body);
     }

@@ -45,6 +45,9 @@
             },
             "urlAvatar": {
               "type": "string"
+            },
+            "reason": {
+              "type": "string"
             }
           },
           "required": ["chatId", "urlAvatar"],
@@ -154,6 +157,9 @@
         },
         "instanceData": {
           "$ref": "#/properties/commonSchemaComponents/properties/instanceData"
+        },
+        "timestamp": {
+          "type": "integer"
         },
         "quotaData": {
           "$ref": "#/properties/commonSchemaComponents/properties/quotaData"

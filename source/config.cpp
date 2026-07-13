@@ -95,7 +95,7 @@ nlohmann::json Config::OpenSchemas() {
     std::vector<std::string> directories = {
         "build/jsonSchema",
         "build/bin/jsonSchema",
-        "bin/jsonSchema"
+        "bin/jsonSchema",
         "jsonSchema",
         "./../jsonSchema",
         "./../../jsonSchema" 

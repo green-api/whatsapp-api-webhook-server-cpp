@@ -474,6 +474,84 @@
                   },
                   "required": ["stanzaId"],
                   "additionalProperties": true
+            },
+            "interactiveButtons": {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object",
+              "properties": {
+                "titleText": {
+                  "type": "string"
+                },
+                "contentText": {
+                  "type": "string"
+                },
+                "footerText": {
+                  "type": "string"
+                },
+                "buttons": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type": { "type": "string" },
+                      "buttonId": { "type": "string" },
+                      "buttonText": { "type": "string" },
+                      "copyCode": { "type": "string" },
+                      "phoneNumber": { "type": "string" },
+                      "url": { "type": "string" }
+                    },
+                    "required": ["type", "buttonId", "buttonText"],
+                    "additionalProperties": true
+                  }
+                }
+              },
+              "required": ["contentText", "buttons"],
+              "additionalProperties": true
+            },
+            "interactiveButtonsReply": {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object",
+              "properties": {
+                "titleText": {
+                  "type": "string"
+                },
+                "contentText": {
+                  "type": "string"
+                },
+                "footerText": {
+                  "type": "string"
+                },
+                "buttons": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type": { "type": "string" },
+                      "buttonId": { "type": "string" },
+                      "buttonText": { "type": "string" },
+                      "copyCode": { "type": "string" },
+                      "phoneNumber": { "type": "string" },
+                      "url": { "type": "string" }
+                    },
+                    "required": ["type", "buttonId", "buttonText"],
+                    "additionalProperties": true
+                  }
+                }
+              },
+              "required": ["contentText", "buttons"],
+              "additionalProperties": true
+            },
+            "interactiveButtonsResponse": {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object",
+              "properties": {
+                "stanzaId": { "type": "string" },
+                "selectedIndex": { "type": "integer" },
+                "selectedId": { "type": "string" },
+                "selectedDisplayText": { "type": "string" }
+              },
+              "required": ["stanzaId", "selectedId", "selectedDisplayText"],
+              "additionalProperties": true
             }
           },
 
@@ -500,7 +578,10 @@
             { "required": ["templateButtonReplyMessage"] },
             { "required": ["deletedMessageData"] },
             { "required": ["editedMessageData"] },
-            { "required": ["listResponseMessage"] }
+            { "required": ["listResponseMessage"] },
+            { "required": ["interactiveButtons"] },
+            { "required": ["interactiveButtonsReply"] },
+            { "required": ["interactiveButtonsResponse"] }
           ],
           "additionalProperties": true
         }

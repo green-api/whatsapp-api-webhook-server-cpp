@@ -752,6 +752,73 @@ bool UserAdapter::onIncomingMessageReceived(greenapi::Response& body) {
         , "info");
     }
 
+    // Incoming product catalog message. View documentation here:
+    // https://green-api.com/docs/api/catalogs/
+    else if (typeMessage == "productMessage") {
+        const auto ProductMessage = messageData["productMessage"];
+
+        const auto ProductId            = ProductMessage["productId"];
+        const auto Title                = ProductMessage["title"];
+        const auto CurrencyCode         = ProductMessage["currencyCode"];
+        const auto Price                = ProductMessage["price"];
+        // Check values exists for contains(), because some fields may be optional
+        const auto Description          = ProductMessage.contains("description")        ? ProductMessage["description"] : nullptr;
+        const auto Url                  = ProductMessage.contains("url")                ? ProductMessage["url"] : nullptr;
+        const auto ProductImageCount    = ProductMessage.contains("productImageCount")  ? ProductMessage["productImageCount"] : nullptr;
+
+        std::string FileDataLog;
+        if (ProductMessage.contains("fileMessageData")) {
+            const auto FileMessageData  = ProductMessage["fileMessageData"];
+            const auto DownloadUrl      = FileMessageData.contains("downloadUrl")       ? FileMessageData["downloadUrl"] : nullptr;
+            const auto JpegThumbnail    = FileMessageData.contains("jpegThumbnail")     ? FileMessageData["jpegThumbnail"] : nullptr;
+            const auto MimeType         = FileMessageData.contains("mimeType")          ? FileMessageData["mimeType"] : nullptr;
+            const auto Caption          = FileMessageData.contains("caption")           ? FileMessageData["caption"] : nullptr;
+            const auto IsAnimated       = FileMessageData.contains("isAnimated")        ? FileMessageData["isAnimated"] : nullptr;
+
+            FileDataLog += (DownloadUrl != nullptr  ? "downloadUrl: " + nlohmann::to_string(DownloadUrl) + ", " : "")
+                + (JpegThumbnail != nullptr         ? "jpegThumbnail: " + nlohmann::to_string(JpegThumbnail) + ", " : "")
+                + (MimeType != nullptr              ? "mimeType: " + nlohmann::to_string(MimeType) + ", " : "")
+                + (Caption != nullptr               ? "caption: " + nlohmann::to_string(Caption) + ", " : "")
+                + (IsAnimated != nullptr            ? std::string("isAnimated: ") + (IsAnimated ? "true" : "false") : "");
+        }
+
+        greenapi::Logger::Log("Product catalog message received: "
+            + std::string("ProductId: ")    + nlohmann::to_string(ProductId)
+            + std::string(", Title: ")      + nlohmann::to_string(Title)
+            + std::string(", Currency: ")   + nlohmann::to_string(CurrencyCode)
+            + std::string(", Price: ")      + nlohmann::to_string(Price)
+            + (Description != nullptr       ? ", Description: " + nlohmann::to_string(Description) : "")
+            + (Url != nullptr               ? ", Url: " + nlohmann::to_string(Url) : "")
+            + (ProductImageCount != nullptr ? ", ProductImageCount: " + nlohmann::to_string(ProductImageCount) : "")
+            + (FileDataLog.empty()          ? "" : ", FileData: {" + FileDataLog + "}")
+        , "info");
+    }
+
+    // Incoming order catalog message. View documentation here:
+    // https://green-api.com/docs/api/catalogs/
+    else if (typeMessage == "orderMessage") {
+        const auto OrderMessage = messageData["orderMessage"];
+
+        const auto OrderId              = OrderMessage["orderId"];
+        const auto Token                = OrderMessage["token"];
+        const auto TotalPrice           = OrderMessage["totalPrice"];
+        const auto TotalCurrencyCode    = OrderMessage["totalCurrencyCode"];
+        const auto SellerJid            = OrderMessage["sellerJid"];
+        const auto ItemsCount           = OrderMessage["itemsCount"];
+        // Check values exists for contains(), because some fields may be optional
+        const auto JpegThumbnail        = OrderMessage.contains("jpegThumbnail") ? OrderMessage["jpegThumbnail"] : nullptr;
+
+        greenapi::Logger::Log("Order catalog message received: "
+            + std::string("OrderId: ")          + nlohmann::to_string(OrderId)
+            + std::string(", Token: ")          + nlohmann::to_string(Token)
+            + std::string(", TotalPrice: ")     + nlohmann::to_string(TotalPrice)
+            + std::string(", Currency: ")       + nlohmann::to_string(TotalCurrencyCode)
+            + std::string(", SellerJid: ")      + nlohmann::to_string(SellerJid)
+            + std::string(", ItemsCount: ")     + nlohmann::to_string(ItemsCount)
+            + (JpegThumbnail != nullptr ? ", JpegThumbnail: " + nlohmann::to_string(JpegThumbnail) : "")
+        , "info");
+    }
+
     else {
         greenapi::Logger::Log("Unknown typeMessage received: " + typeMessage, "warning");
         // Return true will change response status to 400 Bad Request with immediate return of the HTTP request result

@@ -301,7 +301,8 @@
                   "type": "string"
                 },
                 "fileMessageData": {
-                  "$ref": "#/properties/commonSchemaComponents/properties/messageData/properties/fileMessageData"
+                  "type": "object",
+                  "additionalProperties": true
                 }
               },
               "required": ["typeMessage", "fileMessageData"],
@@ -475,6 +476,40 @@
                   "required": ["stanzaId"],
                   "additionalProperties": true
             },
+            "orderMessage": {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object",
+              "properties": {
+                "orderId": { "type": "string" },
+                "token": { "type": "string" },
+                "totalPrice": { "type": "string" },
+                "totalCurrencyCode": { "type": "string" },
+                "sellerJid": { "type": "string" },
+                "itemsCount": { "type": "integer" },
+                "jpegThumbnail": { "type": "string" }
+              },
+              "required": ["orderId", "token", "totalPrice", "totalCurrencyCode", "sellerJid", "itemsCount"],
+              "additionalProperties": true
+            },
+            "productMessage": {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object",
+              "properties": {
+                "productId": { "type": "string" },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "currencyCode": { "type": "string" },
+                "price": { "type": "string" },
+                "url": { "type": "string" },
+                "productImageCount": { "type": "integer" },
+                "fileMessageData": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              },
+              "required": ["productId", "title", "currencyCode", "price"],
+              "additionalProperties": true
+            },
             "interactiveButtons": {
               "$schema": "https://json-schema.org/draft/2020-12/schema",
               "type": "object",
@@ -581,7 +616,9 @@
             { "required": ["listResponseMessage"] },
             { "required": ["interactiveButtons"] },
             { "required": ["interactiveButtonsReply"] },
-            { "required": ["interactiveButtonsResponse"] }
+            { "required": ["interactiveButtonsResponse"] },
+            { "required": ["productMessage"] },
+            { "required": ["orderMessage"] }
           ],
           "additionalProperties": true
         }

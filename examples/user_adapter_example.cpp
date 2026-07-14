@@ -944,7 +944,9 @@ bool UserAdapter::onIncomingCall(greenapi::Response& body) {
     } else if (status == “hungUp”) {
         greenapi::Logger::Log(“The recipient of the incoming call did not pick up the phone and hung up, the \”Do not disturb\” function is activated on the phone”, “info”);
     } else if (status == “declined”) {
-        greenapi::Logger::Log("Unanswered incoming call", "info");
+        greenapi::Logger::Log(“Unanswered incoming call”, “info”);
+    } else {
+        greenapi::Logger::Log(“Unknown incomingCall status: “ + status, “warning”);
     }
 
     // Return false if no error, after this 200 OK response will be returned

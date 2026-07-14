@@ -72,7 +72,7 @@ bool UserAdapter::onIncomingMessageReceived(greenapi::Response& body) {
     // Incoming text message. View documentation here:
     // https://green-api.com/en/docs/api/receiving/notifications-format/incoming-message/TextMessage/
     if (typeMessage == "textMessage") {
-        const auto TextMessageData = messageData["TextMessageData"];
+        const auto TextMessageData = messageData["textMessageData"];
         const auto TextMessage = TextMessageData["textMessage"];    // string: Text message
 
         // Check value exists for contains(), because this field is optional
@@ -605,6 +605,32 @@ bool UserAdapter::onIncomingMessageReceived(greenapi::Response& body) {
         , "info");
     }
 
+    // Incoming edited message. View documentation here:
+    // https://green-api.com/en/docs/api/receiving/notifications-format/incoming-message/EditedMessage/
+    else if (typeMessage == "editedMessage") {
+        const auto EditedMessageData = messageData["editedMessageData"];
+
+        const auto TextMessage  = EditedMessageData["textMessage"]; // string: new message text
+        const auto StanzaId     = EditedMessageData["stanzaId"];    // string: original message identifier
+
+        greenapi::Logger::Log("Edited message received: "
+            + std::string("StanzaId (original): ")  + nlohmann::to_string(StanzaId)
+            + std::string(", NewText: ")             + nlohmann::to_string(TextMessage)
+        , "info");
+    }
+
+    // Incoming deleted message. View documentation here:
+    // https://green-api.com/en/docs/api/receiving/notifications-format/incoming-message/DeletedMessage/
+    else if (typeMessage == "deletedMessage") {
+        const auto DeletedMessageData = messageData["deletedMessageData"];
+
+        const auto StanzaId = DeletedMessageData["stanzaId"]; // string: identifier of the deleted message
+
+        greenapi::Logger::Log("Deleted message received: "
+            + std::string("StanzaId (deleted): ") + nlohmann::to_string(StanzaId)
+        , "info");
+    }
+
     else if (typeMessage == "listResponseMessage") {
         const auto ListResponseMessage = messageData["listResponseMessage"];
 
@@ -621,8 +647,180 @@ bool UserAdapter::onIncomingMessageReceived(greenapi::Response& body) {
         , "info");
     }
 
+    // Incoming message with interactive buttons. View documentation here:
+    // https://green-api.com/docs/api/receiving/notifications-format/incoming-message/InteractiveButtons/
+    else if (typeMessage == "interactiveButtons") {
+        const auto InteractiveButtons = messageData["interactiveButtons"];
+
+        const auto ContentText  = InteractiveButtons["contentText"];
+        // Check values exists for contains(), because some fields may be optional
+        const auto TitleText    = InteractiveButtons.contains("titleText")  ? InteractiveButtons["titleText"]  : nullptr;
+        const auto FooterText   = InteractiveButtons.contains("footerText") ? InteractiveButtons["footerText"] : nullptr;
+
+        std::string ButtonsLog;
+        if (InteractiveButtons.contains("buttons") && InteractiveButtons["buttons"].is_array()) {
+            bool firstTimeLog {true};
+            for (const auto& Button : InteractiveButtons["buttons"]) {
+                const auto Type       = Button["type"];
+                const auto ButtonId   = Button["buttonId"];
+                const auto ButtonText = Button["buttonText"];
+                const auto CopyCode    = Button.contains("copyCode")    ? Button["copyCode"]    : nullptr;
+                const auto PhoneNumber = Button.contains("phoneNumber") ? Button["phoneNumber"] : nullptr;
+                const auto Url         = Button.contains("url")         ? Button["url"]         : nullptr;
+
+                if (!firstTimeLog) {
+                    ButtonsLog += "; ";
+                } else {
+                    firstTimeLog = false;
+                }
+                ButtonsLog += "Type: " + nlohmann::to_string(Type)
+                    + ", ButtonId: "   + nlohmann::to_string(ButtonId)
+                    + ", ButtonText: " + nlohmann::to_string(ButtonText)
+                    + (CopyCode    != nullptr ? ", CopyCode: "    + nlohmann::to_string(CopyCode)    : "")
+                    + (PhoneNumber != nullptr ? ", PhoneNumber: " + nlohmann::to_string(PhoneNumber) : "")
+                    + (Url         != nullptr ? ", Url: "         + nlohmann::to_string(Url)         : "");
+            }
+        }
+
+        greenapi::Logger::Log("Interactive buttons message received: "
+            + (TitleText  != nullptr ? "TitleText: "  + nlohmann::to_string(TitleText) + ", " : "")
+            + std::string("ContentText: ") + nlohmann::to_string(ContentText)
+            + (FooterText != nullptr ? ", FooterText: " + nlohmann::to_string(FooterText) : "")
+            + ", Buttons: " + ButtonsLog
+        , "info");
+    }
+
+    // Outgoing message with interactive buttons (sent via API or from phone). View documentation here:
+    // https://green-api.com/en/docs/api/receiving/notifications-format/outgoing-message/InteractiveButtonsReply/
+    else if (typeMessage == "interactiveButtonsReply") {
+        const auto InteractiveButtonsReply = messageData["interactiveButtonsReply"];
+
+        const auto ContentText  = InteractiveButtonsReply["contentText"];
+        // Check values exists for contains(), because some fields may be optional
+        const auto TitleText    = InteractiveButtonsReply.contains("titleText")  ? InteractiveButtonsReply["titleText"]  : nullptr;
+        const auto FooterText   = InteractiveButtonsReply.contains("footerText") ? InteractiveButtonsReply["footerText"] : nullptr;
+
+        std::string ButtonsLog;
+        if (InteractiveButtonsReply.contains("buttons") && InteractiveButtonsReply["buttons"].is_array()) {
+            bool firstTimeLog {true};
+            for (const auto& Button : InteractiveButtonsReply["buttons"]) {
+                const auto Type       = Button["type"];
+                const auto ButtonId   = Button["buttonId"];
+                const auto ButtonText = Button["buttonText"];
+                const auto CopyCode     = Button.contains("copyCode")     ? Button["copyCode"]     : nullptr;
+                const auto PhoneNumber  = Button.contains("phoneNumber")  ? Button["phoneNumber"]  : nullptr;
+                const auto Url          = Button.contains("url")          ? Button["url"]          : nullptr;
+
+                if (!firstTimeLog) {
+                    ButtonsLog += "; ";
+                } else {
+                    firstTimeLog = false;
+                }
+                ButtonsLog += "Type: " + nlohmann::to_string(Type)
+                    + ", ButtonId: "   + nlohmann::to_string(ButtonId)
+                    + ", ButtonText: " + nlohmann::to_string(ButtonText)
+                    + (CopyCode    != nullptr ? ", CopyCode: "    + nlohmann::to_string(CopyCode)    : "")
+                    + (PhoneNumber != nullptr ? ", PhoneNumber: " + nlohmann::to_string(PhoneNumber) : "")
+                    + (Url         != nullptr ? ", Url: "         + nlohmann::to_string(Url)         : "");
+            }
+        }
+
+        greenapi::Logger::Log("Interactive buttons reply received: "
+            + (TitleText  != nullptr ? "TitleText: "  + nlohmann::to_string(TitleText) + ", " : "")
+            + std::string("ContentText: ") + nlohmann::to_string(ContentText)
+            + (FooterText != nullptr ? ", FooterText: " + nlohmann::to_string(FooterText) : "")
+            + ", Buttons: " + ButtonsLog
+        , "info");
+    }
+
+    // User's reply to interactive buttons. View documentation here:
+    // https://green-api.com/en/docs/api/receiving/notifications-format/outgoing-message/InteractiveButtonsReply/
+    else if (typeMessage == "interactiveButtonsResponse") {
+        const auto InteractiveButtonsResponse = messageData["interactiveButtonsResponse"];
+
+        const auto StanzaId             = InteractiveButtonsResponse["stanzaId"];
+        const auto SelectedId           = InteractiveButtonsResponse["selectedId"];
+        const auto SelectedDisplayText  = InteractiveButtonsResponse["selectedDisplayText"];
+        // Check values exists for contains(), because some fields may be optional
+        const auto SelectedIndex        = InteractiveButtonsResponse.contains("selectedIndex") ? InteractiveButtonsResponse["selectedIndex"] : nullptr;
+
+        greenapi::Logger::Log("Interactive buttons response received: "
+            + std::string("StanzaId: ")             + nlohmann::to_string(StanzaId)
+            + std::string(", SelectedId: ")         + nlohmann::to_string(SelectedId)
+            + std::string(", SelectedDisplayText: ") + nlohmann::to_string(SelectedDisplayText)
+            + (SelectedIndex != nullptr ? ", SelectedIndex: " + nlohmann::to_string(SelectedIndex) : "")
+        , "info");
+    }
+
+    // Incoming product catalog message. View documentation here:
+    // https://green-api.com/docs/api/catalogs/
+    else if (typeMessage == "productMessage") {
+        const auto ProductMessage = messageData["productMessage"];
+
+        const auto ProductId            = ProductMessage["productId"];
+        const auto Title                = ProductMessage["title"];
+        const auto CurrencyCode         = ProductMessage["currencyCode"];
+        const auto Price                = ProductMessage["price"];
+        // Check values exists for contains(), because some fields may be optional
+        const auto Description          = ProductMessage.contains("description")        ? ProductMessage["description"] : nullptr;
+        const auto Url                  = ProductMessage.contains("url")                ? ProductMessage["url"] : nullptr;
+        const auto ProductImageCount    = ProductMessage.contains("productImageCount")  ? ProductMessage["productImageCount"] : nullptr;
+
+        std::string FileDataLog;
+        if (ProductMessage.contains("fileMessageData")) {
+            const auto FileMessageData  = ProductMessage["fileMessageData"];
+            const auto DownloadUrl      = FileMessageData.contains("downloadUrl")       ? FileMessageData["downloadUrl"] : nullptr;
+            const auto JpegThumbnail    = FileMessageData.contains("jpegThumbnail")     ? FileMessageData["jpegThumbnail"] : nullptr;
+            const auto MimeType         = FileMessageData.contains("mimeType")          ? FileMessageData["mimeType"] : nullptr;
+            const auto Caption          = FileMessageData.contains("caption")           ? FileMessageData["caption"] : nullptr;
+            const auto IsAnimated       = FileMessageData.contains("isAnimated")        ? FileMessageData["isAnimated"] : nullptr;
+
+            FileDataLog += (DownloadUrl != nullptr  ? "downloadUrl: " + nlohmann::to_string(DownloadUrl) + ", " : "")
+                + (JpegThumbnail != nullptr         ? "jpegThumbnail: " + nlohmann::to_string(JpegThumbnail) + ", " : "")
+                + (MimeType != nullptr              ? "mimeType: " + nlohmann::to_string(MimeType) + ", " : "")
+                + (Caption != nullptr               ? "caption: " + nlohmann::to_string(Caption) + ", " : "")
+                + (IsAnimated != nullptr            ? std::string("isAnimated: ") + (IsAnimated ? "true" : "false") : "");
+        }
+
+        greenapi::Logger::Log("Product catalog message received: "
+            + std::string("ProductId: ")    + nlohmann::to_string(ProductId)
+            + std::string(", Title: ")      + nlohmann::to_string(Title)
+            + std::string(", Currency: ")   + nlohmann::to_string(CurrencyCode)
+            + std::string(", Price: ")      + nlohmann::to_string(Price)
+            + (Description != nullptr       ? ", Description: " + nlohmann::to_string(Description) : "")
+            + (Url != nullptr               ? ", Url: " + nlohmann::to_string(Url) : "")
+            + (ProductImageCount != nullptr ? ", ProductImageCount: " + nlohmann::to_string(ProductImageCount) : "")
+            + (FileDataLog.empty()          ? "" : ", FileData: {" + FileDataLog + "}")
+        , "info");
+    }
+
+    // Incoming order catalog message. View documentation here:
+    // https://green-api.com/docs/api/catalogs/
+    else if (typeMessage == "orderMessage") {
+        const auto OrderMessage = messageData["orderMessage"];
+
+        const auto OrderId              = OrderMessage["orderId"];
+        const auto Token                = OrderMessage["token"];
+        const auto TotalPrice           = OrderMessage["totalPrice"];
+        const auto TotalCurrencyCode    = OrderMessage["totalCurrencyCode"];
+        const auto SellerJid            = OrderMessage["sellerJid"];
+        const auto ItemsCount           = OrderMessage["itemsCount"];
+        // Check values exists for contains(), because some fields may be optional
+        const auto JpegThumbnail        = OrderMessage.contains("jpegThumbnail") ? OrderMessage["jpegThumbnail"] : nullptr;
+
+        greenapi::Logger::Log("Order catalog message received: "
+            + std::string("OrderId: ")          + nlohmann::to_string(OrderId)
+            + std::string(", Token: ")          + nlohmann::to_string(Token)
+            + std::string(", TotalPrice: ")     + nlohmann::to_string(TotalPrice)
+            + std::string(", Currency: ")       + nlohmann::to_string(TotalCurrencyCode)
+            + std::string(", SellerJid: ")      + nlohmann::to_string(SellerJid)
+            + std::string(", ItemsCount: ")     + nlohmann::to_string(ItemsCount)
+            + (JpegThumbnail != nullptr ? ", JpegThumbnail: " + nlohmann::to_string(JpegThumbnail) : "")
+        , "info");
+    }
+
     else {
-        greenapi::Logger::Log("Unknown typeMessage received" + typeMessage, "info");
+        greenapi::Logger::Log("Unknown typeMessage received: " + typeMessage, "warning");
         // Return true will change response status to 400 Bad Request with immediate return of the HTTP request result
         return true;
     }
@@ -709,22 +907,23 @@ bool UserAdapter::onOutgoingMessageStatus(greenapi::Response& body) {
     const auto Wid          = instanceData["wid"];
     const auto TypeInstance = instanceData["typeInstance"];
     
-    // Every request contains timestamp, idMessage, status, description, sendByAPI, chatID
-    const auto Timestamp = body.bodyJson["timestamp"];
-    const auto IdMessage = body.bodyJson["idMessage"];
+    // Every request contains timestamp, idMessage, status, sendByApi, chatId
+    const auto Timestamp    = body.bodyJson["timestamp"];
+    const auto IdMessage    = body.bodyJson["idMessage"];
     const auto Status       = body.bodyJson["status"];
-    const auto Description  = body.bodyJson["description"];
-    const auto SendByAPI    = body.bodyJson.contains("sendByAPI") ? body.bodyJson["sendByAPI"] : nullptr;
-    const auto ChatID       = body.bodyJson["chatID"];
+    const auto SendByApi    = body.bodyJson.contains("sendByApi") ? body.bodyJson["sendByApi"] : nullptr;
+    const auto ChatId       = body.bodyJson["chatId"];
+    // description is optional: present only when status == "failed"
+    const auto Description  = body.bodyJson.contains("description") ? body.bodyJson["description"] : nullptr;
 
-    greenapi::Logger::Log("Webhook data: " + 
+    greenapi::Logger::Log("Webhook data: " +
         std::string("Webhook fields: {") +
         std::string("timestamp: ")      + nlohmann::to_string(Timestamp) +
         std::string(", idMessage: ")    + nlohmann::to_string(IdMessage) +
         std::string(", status: ")       + nlohmann::to_string(Status) +
-        std::string(", description: ")  + nlohmann::to_string(Description) +
-        ((SendByAPI != nullptr) ? std::string(", sendByAPI: ")  + ((SendByAPI) ? std::string("true") : std::string("false")) : "") +
-        std::string(", chatID: ")       + nlohmann::to_string(ChatID) +
+        (Description != nullptr ? std::string(", description: ") + nlohmann::to_string(Description) : "") +
+        (SendByApi != nullptr ? std::string(", sendByApi: ") + (SendByApi ? std::string("true") : std::string("false")) : "") +
+        std::string(", chatId: ")       + nlohmann::to_string(ChatId) +
         std::string("}, ") +
         std::string("InstanceData: {idInstance: ")     + nlohmann::to_string(IdInstance) +
         std::string(", wid: ")          + nlohmann::to_string(Wid) +
@@ -914,12 +1113,12 @@ bool UserAdapter::onIncomingCall(greenapi::Response& body) {
         greenapi::Logger::Log("Incoming call", "info");
     } else if (status == "pickUp") {
         greenapi::Logger::Log("Answered incoming call", "info");
-    } else if (status == "hangUp") {
-        greenapi::Logger::Log("The recipient of the incoming call did not pick up the phone and hung up, the “Do not disturb” function is activated on the phone", "info");
-    } else if (status == "missed") {
-        greenapi::Logger::Log("The call initiator canceled the call", "info");
-    } else if (status == "declined") {
-        greenapi::Logger::Log("Unanswered incoming call", "info");
+    } else if (status == “hungUp”) {
+        greenapi::Logger::Log(“The recipient of the incoming call did not pick up the phone and hung up, the \”Do not disturb\” function is activated on the phone”, “info”);
+    } else if (status == “declined”) {
+        greenapi::Logger::Log(“Unanswered incoming call”, “info”);
+    } else {
+        greenapi::Logger::Log(“Unknown incomingCall status: “ + status, “warning”);
     }
 
     // Return false if no error, after this 200 OK response will be returned
@@ -979,10 +1178,10 @@ bool UserAdapter::onStatusInstanceChanged(greenapi::Response& body) {
 }
 
 
-// Incoming webhook quotaExceeded contains data about exceeding chat limitations on the Developer plan. 
+// Incoming webhook quotaExceeded contains data about exceeding chat limitations on the Developer plan.
 // Parameters: [typeWebhook: string, instanceData: object, timestamp: integer, quotaData: object]
 // View documentation here:
-// https://green-api.com/en/docs/api/receiving/notifications-format/StatusInstanceChanged/        
+// https://green-api.com/en/docs/api/receiving/notifications-format/QuotaExceeded/
 // Returns: [true], if error; [false], if no error
 bool UserAdapter::onQuotaExceeded(greenapi::Response& body) {
     // Every request contains typeWebhook. Requests are rejected, if no typeWebhook given.
@@ -1046,6 +1245,141 @@ bool UserAdapter::onErrorValidation(greenapi::Response& body) {
     greenapi::Logger::Log("Received invalid webhook with typeWebhook error. Error: " + body.bodyStr + std::string(". Body: ") + nlohmann::to_string(body.bodyJson), "error");
     // Return true if error, after this 400 Bad Request response will be returned
     return true;
+}
+
+// Outgoing call notification. Parameters:
+// [typeWebhook: string, instanceData: object, timestamp: integer, idMessage: string, from: string, isVideo: boolean, duration: integer, status: string, participants: array]
+// View documentation here:
+// https://green-api.com/docs/api/receiving/notifications-format/OutgoingCall/
+// Returns: [true], if error; [false], if no error
+bool UserAdapter::onOutgoingCall(greenapi::Response& body) {
+    // Every request contains typeWebhook. Requests are rejected, if no typeWebhook given.
+    const auto typeWebhook = body.bodyJson["typeWebhook"];
+
+    // If you encountered errors while hanlding, you should return true.
+    // It will change response status to 400 Bad Request with immediate return of the HTTP request result
+    //
+    // if (<error>) {
+    //    return true;
+    //}
+
+    // You can get raw request body using Response.bodyStr:
+    greenapi::Logger::Log("Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr, "info");
+
+    // Every request contains instanceData
+    const auto instanceData = body.bodyJson["instanceData"];
+    const auto IdInstance   = instanceData["idInstance"];
+    const auto Wid          = instanceData["wid"];
+    const auto TypeInstance = instanceData["typeInstance"];
+
+    // Every request contains timestamp, idMessage, from, isVideo, duration, status, participants
+    const auto Timestamp  = body.bodyJson["timestamp"];
+    const auto IdMessage  = body.bodyJson["idMessage"];
+    const auto From       = body.bodyJson["from"];
+    const auto IsVideo    = body.bodyJson["isVideo"];
+    const auto Duration   = body.bodyJson["duration"];
+    const auto Status     = body.bodyJson["status"];
+
+    std::string ParticipantsLog;
+    if (body.bodyJson.contains("participants") && body.bodyJson["participants"].is_array()) {
+        bool firstTimeLog {true};
+        for (const auto& Participant : body.bodyJson["participants"]) {
+            const auto ParticipantId     = Participant["id"];
+            const auto ParticipantStatus = Participant["status"];
+            if (!firstTimeLog) {
+                ParticipantsLog += "; ";
+            } else {
+                firstTimeLog = false;
+            }
+            ParticipantsLog += "id: " + nlohmann::to_string(ParticipantId)
+                + ", status: " + nlohmann::to_string(ParticipantStatus);
+        }
+    }
+
+    greenapi::Logger::Log("Webhook data: " +
+        std::string("Webhook fields: {") +
+        std::string("timestamp: ")   + nlohmann::to_string(Timestamp) +
+        std::string(", idMessage: ") + nlohmann::to_string(IdMessage) +
+        std::string(", from: ")      + nlohmann::to_string(From) +
+        std::string(", isVideo: ")   + (IsVideo ? std::string("true") : std::string("false")) +
+        std::string(", duration: ")  + nlohmann::to_string(Duration) +
+        std::string(", status: ")    + nlohmann::to_string(Status) +
+        std::string(", participants: [") + ParticipantsLog + std::string("]") +
+        std::string("}, ") +
+        std::string("InstanceData: {idInstance: ") + nlohmann::to_string(IdInstance) +
+        std::string(", wid: ")          + nlohmann::to_string(Wid) +
+        std::string(", typeInstance: ") + nlohmann::to_string(TypeInstance) +
+        std::string("}")
+    , "info");
+
+    // Remove any quotes from status before checking its value
+    const std::string status = std::regex_replace(nlohmann::to_string(Status), std::regex("\\\""), "");
+    if (status == "pickUp") {
+        greenapi::Logger::Log("Outgoing call answered", "info");
+    } else if (status == "hungUp") {
+        greenapi::Logger::Log("Outgoing call ended", "info");
+    } else if (status == "invalid") {
+        greenapi::Logger::Log("Outgoing call invalid (recipient unavailable)", "info");
+    } else {
+        greenapi::Logger::Log("Unknown outgoingCall status: " + status, "warning");
+    }
+
+    // Return false if no error, after this 200 OK response will be returned
+    return false;
+}
+
+// DEPRECATED: Incoming block/unblock notification. Parameters:
+// [typeWebhook: string, instanceData: object, timestamp: integer, chatId: string, chatState: string]
+// View documentation here:
+// https://green-api.com/en/docs/api/receiving/notifications-format/IncomingBlock/
+// Returns: [true], if error; [false], if no error
+bool UserAdapter::onIncomingBlock(greenapi::Response& body) {
+    // Every request contains typeWebhook. Requests are rejected, if no typeWebhook given.
+    const auto typeWebhook = body.bodyJson["typeWebhook"];
+
+    // If you encountered errors while hanlding, you should return true.
+    // It will change response status to 400 Bad Request with immediate return of the HTTP request result
+    //
+    // if (<error>) {
+    //    return true;
+    //}
+
+    // You can get raw request body using Response.bodyStr:
+    greenapi::Logger::Log("Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr, "info");
+
+    // Every request contains instanceData
+    const auto instanceData = body.bodyJson["instanceData"];
+    const auto IdInstance   = instanceData["idInstance"];
+    const auto Wid          = instanceData["wid"];
+    const auto TypeInstance = instanceData["typeInstance"];
+
+    // Every request contains timestamp, chatId and chatState
+    const auto Timestamp  = body.bodyJson["timestamp"];
+    const auto ChatId     = body.bodyJson["chatId"];
+    const auto ChatState  = body.bodyJson["chatState"];
+
+    greenapi::Logger::Log("Webhook data: " +
+        std::string("Webhook fields: {") +
+        std::string("timestamp: ")      + nlohmann::to_string(Timestamp) +
+        std::string(", chatId: ")       + nlohmann::to_string(ChatId) +
+        std::string(", chatState: ")    + nlohmann::to_string(ChatState) +
+        std::string("}, ") +
+        std::string("InstanceData: {idInstance: ")     + nlohmann::to_string(IdInstance) +
+        std::string(", wid: ")          + nlohmann::to_string(Wid) +
+        std::string(", typeInstance: ") + nlohmann::to_string(TypeInstance) +
+        std::string("}, ")
+    , "info");
+
+    // Remove any quotes from chatState before checking its value
+    const std::string chatState = std::regex_replace(nlohmann::to_string(ChatState), std::regex("\\\""), "");
+    if (chatState == "block") {
+        greenapi::Logger::Log("Contact blocked: " + nlohmann::to_string(ChatId), "info");
+    } else if (chatState == "unblock") {
+        greenapi::Logger::Log("Contact unblocked: " + nlohmann::to_string(ChatId), "info");
+    }
+
+    // Return false if no error, after this 200 OK response will be returned
+    return false;
 }
 
 // Requests with unknown webhook type will be handled here.

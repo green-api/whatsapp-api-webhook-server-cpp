@@ -45,6 +45,9 @@
             },
             "urlAvatar": {
               "type": "string"
+            },
+            "reason": {
+              "type": "string"
             }
           },
           "required": ["chatId", "urlAvatar"],
@@ -145,6 +148,51 @@
       "additionalProperties": false
     },
 
+    "outgoingCall": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "typeWebhook": {
+          "type": "string"
+        },
+        "instanceData": {
+          "$ref": "#/properties/commonSchemaComponents/properties/instanceData"
+        },
+        "timestamp": {
+          "type": "integer"
+        },
+        "idMessage": {
+          "type": "string"
+        },
+        "from": {
+          "type": "string"
+        },
+        "isVideo": {
+          "type": "boolean"
+        },
+        "duration": {
+          "type": "integer"
+        },
+        "status": {
+          "type": "string"
+        },
+        "participants": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "status": { "type": "string" }
+            },
+            "required": ["id", "status"],
+            "additionalProperties": true
+          }
+        }
+      },
+      "required": ["typeWebhook", "instanceData", "timestamp", "idMessage", "from", "isVideo", "duration", "status", "participants"],
+      "additionalProperties": false
+    },
+
     "quotaExceeded": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
       "type": "object",
@@ -154,6 +202,9 @@
         },
         "instanceData": {
           "$ref": "#/properties/commonSchemaComponents/properties/instanceData"
+        },
+        "timestamp": {
+          "type": "integer"
         },
         "quotaData": {
           "$ref": "#/properties/commonSchemaComponents/properties/quotaData"

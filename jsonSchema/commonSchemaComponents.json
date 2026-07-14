@@ -301,7 +301,8 @@
                   "type": "string"
                 },
                 "fileMessageData": {
-                  "$ref": "#/properties/commonSchemaComponents/properties/messageData/properties/fileMessageData"
+                  "type": "object",
+                  "additionalProperties": true
                 }
               },
               "required": ["typeMessage", "fileMessageData"],
@@ -474,6 +475,118 @@
                   },
                   "required": ["stanzaId"],
                   "additionalProperties": true
+            },
+            "orderMessage": {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object",
+              "properties": {
+                "orderId": { "type": "string" },
+                "token": { "type": "string" },
+                "totalPrice": { "type": "string" },
+                "totalCurrencyCode": { "type": "string" },
+                "sellerJid": { "type": "string" },
+                "itemsCount": { "type": "integer" },
+                "jpegThumbnail": { "type": "string" }
+              },
+              "required": ["orderId", "token", "totalPrice", "totalCurrencyCode", "sellerJid", "itemsCount"],
+              "additionalProperties": true
+            },
+            "productMessage": {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object",
+              "properties": {
+                "productId": { "type": "string" },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "currencyCode": { "type": "string" },
+                "price": { "type": "string" },
+                "url": { "type": "string" },
+                "productImageCount": { "type": "integer" },
+                "fileMessageData": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              },
+              "required": ["productId", "title", "currencyCode", "price"],
+              "additionalProperties": true
+            },
+            "interactiveButtons": {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object",
+              "properties": {
+                "titleText": {
+                  "type": "string"
+                },
+                "contentText": {
+                  "type": "string"
+                },
+                "footerText": {
+                  "type": "string"
+                },
+                "buttons": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type": { "type": "string" },
+                      "buttonId": { "type": "string" },
+                      "buttonText": { "type": "string" },
+                      "copyCode": { "type": "string" },
+                      "phoneNumber": { "type": "string" },
+                      "url": { "type": "string" }
+                    },
+                    "required": ["type", "buttonId", "buttonText"],
+                    "additionalProperties": true
+                  }
+                }
+              },
+              "required": ["contentText", "buttons"],
+              "additionalProperties": true
+            },
+            "interactiveButtonsReply": {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object",
+              "properties": {
+                "titleText": {
+                  "type": "string"
+                },
+                "contentText": {
+                  "type": "string"
+                },
+                "footerText": {
+                  "type": "string"
+                },
+                "buttons": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type": { "type": "string" },
+                      "buttonId": { "type": "string" },
+                      "buttonText": { "type": "string" },
+                      "copyCode": { "type": "string" },
+                      "phoneNumber": { "type": "string" },
+                      "url": { "type": "string" }
+                    },
+                    "required": ["type", "buttonId", "buttonText"],
+                    "additionalProperties": true
+                  }
+                }
+              },
+              "required": ["contentText", "buttons"],
+              "additionalProperties": true
+            },
+            "interactiveButtonsResponse": {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object",
+              "properties": {
+                "stanzaId": { "type": "string" },
+                "selectedIndex": { "type": "integer" },
+                "selectedId": { "type": "string" },
+                "selectedDisplayText": { "type": "string" }
+              },
+              "required": ["stanzaId", "selectedId", "selectedDisplayText"],
+              "additionalProperties": true
             }
           },
 
@@ -500,7 +613,12 @@
             { "required": ["templateButtonReplyMessage"] },
             { "required": ["deletedMessageData"] },
             { "required": ["editedMessageData"] },
-            { "required": ["listResponseMessage"] }
+            { "required": ["listResponseMessage"] },
+            { "required": ["interactiveButtons"] },
+            { "required": ["interactiveButtonsReply"] },
+            { "required": ["interactiveButtonsResponse"] },
+            { "required": ["productMessage"] },
+            { "required": ["orderMessage"] }
           ],
           "additionalProperties": true
         }

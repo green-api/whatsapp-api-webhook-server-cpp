@@ -281,9 +281,38 @@ bool UserAdapter::onUnknownTypeWebhook(greenapi::Response& body) {
 
     // No error given to request, if it's unknown
     std::cout << "Received unknown webhook" + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr << std::endl;
-    
+
     // Write your handler here:
 
     // Return false if no error, after this 200 OK response will be returned
     return false;
 }
+
+// Outgoing call notification. Parameters:
+// [typeWebhook: string, instanceData: object, timestamp: integer, idMessage: string, from: string, isVideo: boolean, duration: integer, status: string, participants: array]
+// View documentation here:
+// https://green-api.com/docs/api/receiving/notifications-format/OutgoingCall/
+// Returns: [true], if error; [false], if no error
+bool UserAdapter::onOutgoingCall(greenapi::Response& body) {
+    const auto typeWebhook = body.bodyJson["typeWebhook"];
+    std::cout << "Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr << std::endl;
+    return false;
+}
+
+// DEPRECATED: Incoming block/unblock notification. Parameters:
+// [typeWebhook: string, instanceData: object, timestamp: integer, chatId: string, chatState: string]
+// View documentation here:
+// https://green-api.com/en/docs/api/receiving/notifications-format/IncomingBlock/
+// Returns: [true], if error; [false], if no error
+bool UserAdapter::onIncomingBlock(greenapi::Response& body) {
+    const auto typeWebhook = body.bodyJson["typeWebhook"];
+    std::cout << "Received webhook: " + nlohmann::to_string(typeWebhook) + std::string(" with body: ") + body.bodyStr << std::endl;
+    return false;
+}
+// Outgoing call notification. Parameters:
+// [typeWebhook: string, instanceData: object, timestamp: integer, idMessage: string, from: string, isVideo: boolean, duration: integer, status: string, participants: array]
+// View documentation here:
+// https://green-api.com/docs/api/receiving/notifications-format/OutgoingCall/
+// Returns: [true], if error; [false], if no error
+bool UserAdapter::onOutgoingCall(greenapi::Response& body) {
+    const auto typeWebhook = body.bodyJson[" typeWebhook]
